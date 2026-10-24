@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitleTag">الباشمحاسب | نظام المحاسبة الاحترافي</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; direction: rtl; background: #f1f5f9; color: #0f172a; }
+  body.en { font-family: 'Inter', 'Tajawal', sans-serif; direction: ltr; }
+  body.en [dir="rtl"], body.en .rtl-only { direction: ltr; text-align: left; }
+  [dir="rtl"] .text-left { text-align: right !important; }
+  [dir="rtl"] .text-right { text-align: left !important; }
+  [dir="rtl"] .ml-auto { margin-right: auto; margin-left: 0; }
+  [dir="rtl"] .mr-auto { margin-left: auto; margin-right: 0; }
+  [dir="rtl"] .ml-2 { margin-left: 0; margin-right: 0.5rem; }
+  [dir="rtl"] .mr-2 { margin-right: 0; margin-left: 0.5rem; }
+  [dir="rtl"] .ml-3 { margin-left: 0; margin-right: 0.75rem; }
+  [dir="rtl"] .mr-3 { margin-right: 0; margin-left: 0.75rem; }
+  [dir="rtl"] .ml-4 { margin-left: 0; margin-right: 1rem; }
+  [dir="rtl"] .mr-4 { margin-right: 0; margin-left: 1rem; }
+  [dir="rtl"] .pl-4 { padding-left: 0; padding-right: 1rem; }
+  [dir="rtl"] .pr-4 { padding-right: 0; padding-left: 1rem; }
+  [dir="rtl"] .pl-2 { padding-left: 0; padding-right: 0.5rem; }
+  [dir="rtl"] .pr-2 { padding-right: 0; padding-left: 0.5rem; }
+  [dir="rtl"] .rounded-l { border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0.375rem; border-bottom-right-radius: 0.375rem; }
+  [dir="rtl"] .rounded-r { border-top-right-radius: 0; border-bottom-right-radius: 0; border-top-left-radius: 0.375rem; border-bottom-left-radius: 0.375rem; }
+  [dir="rtl"] .flex-row { flex-direction: row-reverse; }
+  [dir="rtl"] .border-l { border-left: 0; border-right: 1px solid; }
+  [dir="rtl"] .border-r { border-right: 0; border-left: 1px solid; }
+  [dir="rtl"] .space-x-2 > * + * { margin-right: 0; margin-left: 0.5rem; }
+  [dir="rtl"] .space-x-4 > * + * { margin-right: 0; margin-left: 1rem; }
+  body.en .text-left { text-align: left !important; }
+  body.en .text-right { text-align: right !important; }
+  body.en .ml-auto { margin-left: auto; margin-right: 0; }
+  body.en .mr-auto { margin-right: auto; margin-left: 0; }
+  body.en .ml-2 { margin-left: 0.5rem; margin-right: 0; }
+  body.en .mr-2 { margin-right: 0.5rem; margin-left: 0; }
+  body.en .ml-3 { margin-left: 0.75rem; margin-right: 0; }
+  body.en .mr-3 { margin-right: 0.75rem; margin-left: 0; }
+  body.en .ml-4 { margin-left: 1rem; margin-right: 0; }
+  body.en .mr-4 { margin-right: 1rem; margin-left: 0; }
+  body.en .pl-4 { padding-left: 1rem; padding-right: 0; }
+  body.en .pr-4 { padding-right: 1rem; padding-left: 0; }
+  body.en .pl-2 { padding-left: 0.5rem; padding-right: 0; }
+  body.en .pr-2 { padding-right: 0.5rem; padding-left: 0; }
+  body.en .rounded-l { border-top-left-radius: 0.375rem; border-bottom-left-radius: 0.375rem; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  body.en .rounded-r { border-top-right-radius: 0.375rem; border-bottom-right-radius: 0.375rem; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+  body.en .border-l { border-left: 1px solid; border-right: 0; }
+  body.en .border-r { border-right: 1px solid; border-left: 0; }
+  body.en .flex-row { flex-direction: row; }
+  body.en .space-x-2 > * + * { margin-left: 0; margin-right: 0.5rem; }
+  body.en .space-x-4 > * + * { margin-left: 0; margin-right: 1rem; }
+  body.en .input-group input { padding: 0.65rem 1rem 0.65rem 2.8rem; }
+  body.en .input-icon { left: 0.85rem; right: auto; }
+  .font-arabic { font-family: 'Tajawal', sans-serif; }
+  .glass { background: rgba(15,23,42,0.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.25); }
+  #loginForm .input-group input { background: rgba(255,255,255,0.12); color: #fff; border-color: rgba(255,255,255,0.35); }
+  #loginForm .input-group input::placeholder { color: rgba(255,255,255,0.65); }
+  #loginForm .input-group input:focus { background: rgba(255,255,255,0.2); }
+  .hidden { display: none !important; }
+  .sidebar { width: 260px; flex-shrink: 0; }
+  .main-content { flex: 1; min-width: 0; }
+  .nav-item.active { background: linear-gradient(90deg, rgba(245,158,11,0.15), transparent); border-right: 4px solid #f59e0b; color: #1e3a8a; font-weight: 600; }
+  body.en .nav-item.active { border-right: 0; border-left: 4px solid #f59e0b; }
+  .nav-item { transition: all 0.2s ease; border-right: 2px solid transparent; }
+  body.en .nav-item { border-right: 0; border-left: 2px solid transparent; }
+  .nav-item:hover { background: rgba(15,23,42,0.05); color: #1e3a8a; }
+  .table-scroll { overflow-x: auto; }
+  .btn-primary { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: white; transition: all 0.2s; }
+  .btn-primary:hover { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(30,58,138,0.35); }
+  .btn-success { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; transition: all 0.2s; }
+  .btn-success:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(5,150,105,0.35); }
+  .btn-danger { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; transition: all 0.2s; }
+  .btn-danger:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(220,38,38,0.35); }
+  .badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+  .badge-debit { background: #fef3c7; color: #92400e; }
+  .badge-credit { background: #d1fae5; color: #065f46; }
+  .badge-asset { background: #dbeafe; color: #1e3a8a; }
+  .badge-liability { background: #fce7f3; color: #9d174d; }
+  .badge-equity { background: #e0e7ff; color: #3730a3; }
+  .badge-revenue { background: #ccfbf1; color: #115e59; }
+  .badge-expense { background: #ffe4e6; color: #9f1239; }
+  .modal { display: none; position: fixed; inset: 0; z-index: 50; }
+  .modal.show { display: flex; align-items: center; justify-content: center; }
+  .modal-backdrop { position: absolute; inset: 0; background: rgba(15,23,42,0.55); backdrop-filter: blur(6px); }
+  .modal-content { position: relative; z-index: 10; background: white; border-radius: 1rem; max-width: 640px; width: 92vw; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .empty-state { text-align: center; padding: 4rem 1rem; color: #64748b; }
+  .empty-state svg { width: 80px; height: 80px; margin: 0 auto 1rem; opacity: 0.4; }
+  .input-group { position: relative; }
+  .input-group input { width: 100%; padding: 0.65rem 1rem 0.65rem 2.8rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; background: #f8fafc; transition: all 0.2s; }
+  .input-group input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); background: white; }
+  .input-icon { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 1.1rem; }
+  body.en .input-group input { padding: 0.65rem 2.8rem 0.65rem 1rem; }
+  body.en .input-icon { left: auto; right: 0.85rem; }
+  .card { background: white; border-radius: 0.75rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1); }
+  .card-header { padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
+  .card-body { padding: 1.25rem; }
+  .card-footer { padding: 1rem 1.25rem; border-top: 1px solid #f1f5f9; background: #f8fafc; }
+  .stat-card { background: white; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+  .stat-card .value { font-size: 1.75rem; font-weight: 700; color: #1e3a8a; direction: ltr; }
+  .stat-card .label { font-size: 0.85rem; color: #64748b; }
+  .stat-card .icon { width: 48px; height: 48px; border-radius: 0.75rem; display: grid; place-items: center; font-size: 1.5rem; background: #eff6ff; color: #2563eb; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: right; padding: 0.75rem; font-size: 0.8rem; font-weight: 600; color: #475569; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 2px solid #e2e8f0; background: #f8fafc; }
+  body.en th { text-align: left; }
+  td { padding: 0.75rem; font-size: 0.875rem; color: #334155; border-bottom: 1px solid #f1f5f9; }
+  tr:hover td { background: #f8fafc; }
+  .text-debit { color: #92400e; font-weight: 600; }
+  .text-credit { color: #065f46; font-weight: 600; }
+  .balance-positive { color: #047857; font-weight: 700; }
+  .balance-negative { color: #dc2626; font-weight: 700; }
+  .total-row td { font-weight: 700; color: #0f172a; border-top: 2px solid #1e3a8a; background: #eff6ff !important; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  .fade-in { animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .loading { display: inline-block; width: 20px; height: 20px; border: 2px solid #cbd5e1; border-top-color: #2563eb; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .ltr { direction: ltr; text-align: left; }
+  .lang-toggle { position: fixed; top: 1rem; left: 1rem; z-index: 100; background: white; border: 1px solid #cbd5e1; padding: 0.4rem 0.8rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  body.en .lang-toggle { left: auto; right: 1rem; }
+  .logo-box { width: 56px; height: 56px; border-radius: 14px; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(245,158,11,0.35); }
+  .logo-box svg { width: 28px; height: 28px; color: white; }
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 60; background: #0f172a; color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); transform: translateY(100px); transition: transform 0.3s ease; }
+  .toast.show { transform: translateY(0); }
+  body.en .toast { right: auto; left: 1.5rem; }
+@media print{.sidebar,header,.lang-toggle,.no-print,#subBanner,.toast,.modal{display:none!important}#appView{display:block!important;height:auto!important;overflow:visible!important}.main-content{overflow:visible!important}body{background:#fff}.card{box-shadow:none}}
+</style>
+<style>*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width:640px){.container{max-width:640px}}@media (min-width:768px){.container{max-width:768px}}@media (min-width:1024px){.container{max-width:1024px}}@media (min-width:1280px){.container{max-width:1280px}}@media (min-width:1536px){.container{max-width:1536px}}.collapse{visibility:collapse}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.left-0{left:0}.top-0{top:0}.z-10{z-index:10}.z-20{z-index:20}.mx-auto{margin-left:auto;margin-right:auto}.my-4{margin-top:1rem;margin-bottom:1rem}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.mb-6{margin-bottom:1.5rem}.ml-2{margin-left:.5rem}.ml-3{margin-left:.75rem}.ml-4{margin-left:1rem}.ml-auto{margin-left:auto}.mr-2{margin-right:.5rem}.mr-3{margin-right:.75rem}.mr-4{margin-right:1rem}.mr-auto{margin-right:auto}.mt-1{margin-top:.25rem}.mt-2{margin-top:.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.block{display:block}.flex{display:flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-1{height:.25rem}.h-10{height:2.5rem}.h-16{height:4rem}.h-2{height:.5rem}.h-7{height:1.75rem}.h-full{height:100%}.h-px{height:1px}.h-screen{height:100vh}.min-h-screen{min-height:100vh}.w-10{width:2.5rem}.w-16{width:4rem}.w-2{width:.5rem}.w-7{width:1.75rem}.w-full{width:100%}.max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.max-w-\[160px\]{max-width:160px}.max-w-md{max-width:28rem}.max-w-xl{max-width:36rem}.max-w-xs{max-width:20rem}.flex-1{flex:1 1 0%}.flex-shrink{flex-shrink:1}.border-collapse{border-collapse:collapse}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-row{flex-direction:row}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.space-x-2>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(.5rem*var(--tw-space-x-reverse));margin-left:calc(.5rem*(1 - var(--tw-space-x-reverse)))}.space-x-4>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1rem*var(--tw-space-x-reverse));margin-left:calc(1rem*(1 - var(--tw-space-x-reverse)))}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-2>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.5rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.rounded-l{border-top-left-radius:.25rem;border-bottom-left-radius:.25rem}.rounded-r{border-top-right-radius:.25rem;border-bottom-right-radius:.25rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-l{border-left-width:1px}.border-r{border-right-width:1px}.border-t{border-top-width:1px}.border-amber-100{--tw-border-opacity:1;border-color:rgb(254 243 199/var(--tw-border-opacity,1))}.border-amber-200{--tw-border-opacity:1;border-color:rgb(253 230 138/var(--tw-border-opacity,1))}.border-amber-50{--tw-border-opacity:1;border-color:rgb(255 251 235/var(--tw-border-opacity,1))}.border-amber-500{--tw-border-opacity:1;border-color:rgb(245 158 11/var(--tw-border-opacity,1))}.border-amber-600{--tw-border-opacity:1;border-color:rgb(217 119 6/var(--tw-border-opacity,1))}.border-amber-700{--tw-border-opacity:1;border-color:rgb(180 83 9/var(--tw-border-opacity,1))}.border-amber-800{--tw-border-opacity:1;border-color:rgb(146 64 14/var(--tw-border-opacity,1))}.border-blue-100{--tw-border-opacity:1;border-color:rgb(219 234 254/var(--tw-border-opacity,1))}.border-blue-200{--tw-border-opacity:1;border-color:rgb(191 219 254/var(--tw-border-opacity,1))}.border-blue-50{--tw-border-opacity:1;border-color:rgb(239 246 255/var(--tw-border-opacity,1))}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246/var(--tw-border-opacity,1))}.border-blue-600{--tw-border-opacity:1;border-color:rgb(37 99 235/var(--tw-border-opacity,1))}.border-blue-700{--tw-border-opacity:1;border-color:rgb(29 78 216/var(--tw-border-opacity,1))}.border-blue-800{--tw-border-opacity:1;border-color:rgb(30 64 175/var(--tw-border-opacity,1))}.border-emerald-100{--tw-border-opacity:1;border-color:rgb(209 250 229/var(--tw-border-opacity,1))}.border-emerald-200{--tw-border-opacity:1;border-color:rgb(167 243 208/var(--tw-border-opacity,1))}.border-emerald-50{--tw-border-opacity:1;border-color:rgb(236 253 245/var(--tw-border-opacity,1))}.border-emerald-500{--tw-border-opacity:1;border-color:rgb(16 185 129/var(--tw-border-opacity,1))}.border-emerald-600{--tw-border-opacity:1;border-color:rgb(5 150 105/var(--tw-border-opacity,1))}.border-emerald-700{--tw-border-opacity:1;border-color:rgb(4 120 87/var(--tw-border-opacity,1))}.border-emerald-800{--tw-border-opacity:1;border-color:rgb(6 95 70/var(--tw-border-opacity,1))}.border-gray-100{--tw-border-opacity:1;border-color:rgb(243 244 246/var(--tw-border-opacity,1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235/var(--tw-border-opacity,1))}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219/var(--tw-border-opacity,1))}.border-gray-50{--tw-border-opacity:1;border-color:rgb(249 250 251/var(--tw-border-opacity,1))}.border-gray-500{--tw-border-opacity:1;border-color:rgb(107 114 128/var(--tw-border-opacity,1))}.border-gray-600{--tw-border-opacity:1;border-color:rgb(75 85 99/var(--tw-border-opacity,1))}.border-gray-700{--tw-border-opacity:1;border-color:rgb(55 65 81/var(--tw-border-opacity,1))}.border-gray-800{--tw-border-opacity:1;border-color:rgb(31 41 55/var(--tw-border-opacity,1))}.border-green-100{--tw-border-opacity:1;border-color:rgb(220 252 231/var(--tw-border-opacity,1))}.border-green-200{--tw-border-opacity:1;border-color:rgb(187 247 208/var(--tw-border-opacity,1))}.border-green-50{--tw-border-opacity:1;border-color:rgb(240 253 244/var(--tw-border-opacity,1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94/var(--tw-border-opacity,1))}.border-green-600{--tw-border-opacity:1;border-color:rgb(22 163 74/var(--tw-border-opacity,1))}.border-green-700{--tw-border-opacity:1;border-color:rgb(21 128 61/var(--tw-border-opacity,1))}.border-green-800{--tw-border-opacity:1;border-color:rgb(22 101 52/var(--tw-border-opacity,1))}.border-indigo-100{--tw-border-opacity:1;border-color:rgb(224 231 255/var(--tw-border-opacity,1))}.border-indigo-200{--tw-border-opacity:1;border-color:rgb(199 210 254/var(--tw-border-opacity,1))}.border-indigo-50{--tw-border-opacity:1;border-color:rgb(238 242 255/var(--tw-border-opacity,1))}.border-indigo-500{--tw-border-opacity:1;border-color:rgb(99 102 241/var(--tw-border-opacity,1))}.border-indigo-600{--tw-border-opacity:1;border-color:rgb(79 70 229/var(--tw-border-opacity,1))}.border-indigo-700{--tw-border-opacity:1;border-color:rgb(67 56 202/var(--tw-border-opacity,1))}.border-indigo-800{--tw-border-opacity:1;border-color:rgb(55 48 163/var(--tw-border-opacity,1))}.border-orange-100{--tw-border-opacity:1;border-color:rgb(255 237 213/var(--tw-border-opacity,1))}.border-orange-200{--tw-border-opacity:1;border-color:rgb(254 215 170/var(--tw-border-opacity,1))}.border-orange-50{--tw-border-opacity:1;border-color:rgb(255 247 237/var(--tw-border-opacity,1))}.border-orange-500{--tw-border-opacity:1;border-color:rgb(249 115 22/var(--tw-border-opacity,1))}.border-orange-600{--tw-border-opacity:1;border-color:rgb(234 88 12/var(--tw-border-opacity,1))}.border-orange-700{--tw-border-opacity:1;border-color:rgb(194 65 12/var(--tw-border-opacity,1))}.border-orange-800{--tw-border-opacity:1;border-color:rgb(154 52 18/var(--tw-border-opacity,1))}.border-purple-100{--tw-border-opacity:1;border-color:rgb(243 232 255/var(--tw-border-opacity,1))}.border-purple-200{--tw-border-opacity:1;border-color:rgb(233 213 255/var(--tw-border-opacity,1))}.border-purple-50{--tw-border-opacity:1;border-color:rgb(250 245 255/var(--tw-border-opacity,1))}.border-purple-500{--tw-border-opacity:1;border-color:rgb(168 85 247/var(--tw-border-opacity,1))}.border-purple-600{--tw-border-opacity:1;border-color:rgb(147 51 234/var(--tw-border-opacity,1))}.border-purple-700{--tw-border-opacity:1;border-color:rgb(126 34 206/var(--tw-border-opacity,1))}.border-purple-800{--tw-border-opacity:1;border-color:rgb(107 33 168/var(--tw-border-opacity,1))}.border-red-100{--tw-border-opacity:1;border-color:rgb(254 226 226/var(--tw-border-opacity,1))}.border-red-200{--tw-border-opacity:1;border-color:rgb(254 202 202/var(--tw-border-opacity,1))}.border-red-50{--tw-border-opacity:1;border-color:rgb(254 242 242/var(--tw-border-opacity,1))}.border-red-500{--tw-border-opacity:1;border-color:rgb(239 68 68/var(--tw-border-opacity,1))}.border-red-600{--tw-border-opacity:1;border-color:rgb(220 38 38/var(--tw-border-opacity,1))}.border-red-700{--tw-border-opacity:1;border-color:rgb(185 28 28/var(--tw-border-opacity,1))}.border-red-800{--tw-border-opacity:1;border-color:rgb(153 27 27/var(--tw-border-opacity,1))}.border-rose-100{--tw-border-opacity:1;border-color:rgb(255 228 230/var(--tw-border-opacity,1))}.border-rose-200{--tw-border-opacity:1;border-color:rgb(254 205 211/var(--tw-border-opacity,1))}.border-rose-50{--tw-border-opacity:1;border-color:rgb(255 241 242/var(--tw-border-opacity,1))}.border-rose-500{--tw-border-opacity:1;border-color:rgb(244 63 94/var(--tw-border-opacity,1))}.border-rose-600{--tw-border-opacity:1;border-color:rgb(225 29 72/var(--tw-border-opacity,1))}.border-rose-700{--tw-border-opacity:1;border-color:rgb(190 18 60/var(--tw-border-opacity,1))}.border-rose-800{--tw-border-opacity:1;border-color:rgb(159 18 57/var(--tw-border-opacity,1))}.border-teal-100{--tw-border-opacity:1;border-color:rgb(204 251 241/var(--tw-border-opacity,1))}.border-teal-200{--tw-border-opacity:1;border-color:rgb(153 246 228/var(--tw-border-opacity,1))}.border-teal-50{--tw-border-opacity:1;border-color:rgb(240 253 250/var(--tw-border-opacity,1))}.border-teal-500{--tw-border-opacity:1;border-color:rgb(20 184 166/var(--tw-border-opacity,1))}.border-teal-600{--tw-border-opacity:1;border-color:rgb(13 148 136/var(--tw-border-opacity,1))}.border-teal-700{--tw-border-opacity:1;border-color:rgb(15 118 110/var(--tw-border-opacity,1))}.border-teal-800{--tw-border-opacity:1;border-color:rgb(17 94 89/var(--tw-border-opacity,1))}.border-white\/20{border-color:hsla(0,0%,100%,.2)}.bg-amber-100{--tw-bg-opacity:1;background-color:rgb(254 243 199/var(--tw-bg-opacity,1))}.bg-amber-200{--tw-bg-opacity:1;background-color:rgb(253 230 138/var(--tw-bg-opacity,1))}.bg-amber-50{--tw-bg-opacity:1;background-color:rgb(255 251 235/var(--tw-bg-opacity,1))}.bg-amber-500{--tw-bg-opacity:1;background-color:rgb(245 158 11/var(--tw-bg-opacity,1))}.bg-amber-600{--tw-bg-opacity:1;background-color:rgb(217 119 6/var(--tw-bg-opacity,1))}.bg-amber-700{--tw-bg-opacity:1;background-color:rgb(180 83 9/var(--tw-bg-opacity,1))}.bg-amber-800{--tw-bg-opacity:1;background-color:rgb(146 64 14/var(--tw-bg-opacity,1))}.bg-blue-100{--tw-bg-opacity:1;background-color:rgb(219 234 254/var(--tw-bg-opacity,1))}.bg-blue-200{--tw-bg-opacity:1;background-color:rgb(191 219 254/var(--tw-bg-opacity,1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255/var(--tw-bg-opacity,1))}.bg-blue-500{--tw-bg-opacity:1;background-color:rgb(59 130 246/var(--tw-bg-opacity,1))}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235/var(--tw-bg-opacity,1))}.bg-blue-700{--tw-bg-opacity:1;background-color:rgb(29 78 216/var(--tw-bg-opacity,1))}.bg-blue-800{--tw-bg-opacity:1;background-color:rgb(30 64 175/var(--tw-bg-opacity,1))}.bg-emerald-100{--tw-bg-opacity:1;background-color:rgb(209 250 229/var(--tw-bg-opacity,1))}.bg-emerald-200{--tw-bg-opacity:1;background-color:rgb(167 243 208/var(--tw-bg-opacity,1))}.bg-emerald-50{--tw-bg-opacity:1;background-color:rgb(236 253 245/var(--tw-bg-opacity,1))}.bg-emerald-500{--tw-bg-opacity:1;background-color:rgb(16 185 129/var(--tw-bg-opacity,1))}.bg-emerald-600{--tw-bg-opacity:1;background-color:rgb(5 150 105/var(--tw-bg-opacity,1))}.bg-emerald-700{--tw-bg-opacity:1;background-color:rgb(4 120 87/var(--tw-bg-opacity,1))}.bg-emerald-800{--tw-bg-opacity:1;background-color:rgb(6 95 70/var(--tw-bg-opacity,1))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246/var(--tw-bg-opacity,1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235/var(--tw-bg-opacity,1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251/var(--tw-bg-opacity,1))}.bg-gray-500{--tw-bg-opacity:1;background-color:rgb(107 114 128/var(--tw-bg-opacity,1))}.bg-gray-600{--tw-bg-opacity:1;background-color:rgb(75 85 99/var(--tw-bg-opacity,1))}.bg-gray-700{--tw-bg-opacity:1;background-color:rgb(55 65 81/var(--tw-bg-opacity,1))}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55/var(--tw-bg-opacity,1))}.bg-gray-900{--tw-bg-opacity:1;background-color:rgb(17 24 39/var(--tw-bg-opacity,1))}.bg-green-100{--tw-bg-opacity:1;background-color:rgb(220 252 231/var(--tw-bg-opacity,1))}.bg-green-200{--tw-bg-opacity:1;background-color:rgb(187 247 208/var(--tw-bg-opacity,1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244/var(--tw-bg-opacity,1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94/var(--tw-bg-opacity,1))}.bg-green-600{--tw-bg-opacity:1;background-color:rgb(22 163 74/var(--tw-bg-opacity,1))}.bg-green-700{--tw-bg-opacity:1;background-color:rgb(21 128 61/var(--tw-bg-opacity,1))}.bg-green-800{--tw-bg-opacity:1;background-color:rgb(22 101 52/var(--tw-bg-opacity,1))}.bg-indigo-100{--tw-bg-opacity:1;background-color:rgb(224 231 255/var(--tw-bg-opacity,1))}.bg-indigo-200{--tw-bg-opacity:1;background-color:rgb(199 210 254/var(--tw-bg-opacity,1))}.bg-indigo-50{--tw-bg-opacity:1;background-color:rgb(238 242 255/var(--tw-bg-opacity,1))}.bg-indigo-500{--tw-bg-opacity:1;background-color:rgb(99 102 241/var(--tw-bg-opacity,1))}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229/var(--tw-bg-opacity,1))}.bg-indigo-700{--tw-bg-opacity:1;background-color:rgb(67 56 202/var(--tw-bg-opacity,1))}.bg-indigo-800{--tw-bg-opacity:1;background-color:rgb(55 48 163/var(--tw-bg-opacity,1))}.bg-orange-100{--tw-bg-opacity:1;background-color:rgb(255 237 213/var(--tw-bg-opacity,1))}.bg-orange-200{--tw-bg-opacity:1;background-color:rgb(254 215 170/var(--tw-bg-opacity,1))}.bg-orange-50{--tw-bg-opacity:1;background-color:rgb(255 247 237/var(--tw-bg-opacity,1))}.bg-orange-500{--tw-bg-opacity:1;background-color:rgb(249 115 22/var(--tw-bg-opacity,1))}.bg-orange-600{--tw-bg-opacity:1;background-color:rgb(234 88 12/var(--tw-bg-opacity,1))}.bg-orange-700{--tw-bg-opacity:1;background-color:rgb(194 65 12/var(--tw-bg-opacity,1))}.bg-orange-800{--tw-bg-opacity:1;background-color:rgb(154 52 18/var(--tw-bg-opacity,1))}.bg-purple-100{--tw-bg-opacity:1;background-color:rgb(243 232 255/var(--tw-bg-opacity,1))}.bg-purple-200{--tw-bg-opacity:1;background-color:rgb(233 213 255/var(--tw-bg-opacity,1))}.bg-purple-50{--tw-bg-opacity:1;background-color:rgb(250 245 255/var(--tw-bg-opacity,1))}.bg-purple-500{--tw-bg-opacity:1;background-color:rgb(168 85 247/var(--tw-bg-opacity,1))}.bg-purple-600{--tw-bg-opacity:1;background-color:rgb(147 51 234/var(--tw-bg-opacity,1))}.bg-purple-700{--tw-bg-opacity:1;background-color:rgb(126 34 206/var(--tw-bg-opacity,1))}.bg-purple-800{--tw-bg-opacity:1;background-color:rgb(107 33 168/var(--tw-bg-opacity,1))}.bg-red-100{--tw-bg-opacity:1;background-color:rgb(254 226 226/var(--tw-bg-opacity,1))}.bg-red-200{--tw-bg-opacity:1;background-color:rgb(254 202 202/var(--tw-bg-opacity,1))}.bg-red-50{--tw-bg-opacity:1;background-color:rgb(254 242 242/var(--tw-bg-opacity,1))}.bg-red-500{--tw-bg-opacity:1;background-color:rgb(239 68 68/var(--tw-bg-opacity,1))}.bg-red-600{--tw-bg-opacity:1;background-color:rgb(220 38 38/var(--tw-bg-opacity,1))}.bg-red-700{--tw-bg-opacity:1;background-color:rgb(185 28 28/var(--tw-bg-opacity,1))}.bg-red-800{--tw-bg-opacity:1;background-color:rgb(153 27 27/var(--tw-bg-opacity,1))}.bg-rose-100{--tw-bg-opacity:1;background-color:rgb(255 228 230/var(--tw-bg-opacity,1))}.bg-rose-200{--tw-bg-opacity:1;background-color:rgb(254 205 211/var(--tw-bg-opacity,1))}.bg-rose-50{--tw-bg-opacity:1;background-color:rgb(255 241 242/var(--tw-bg-opacity,1))}.bg-rose-500{--tw-bg-opacity:1;background-color:rgb(244 63 94/var(--tw-bg-opacity,1))}.bg-rose-600{--tw-bg-opacity:1;background-color:rgb(225 29 72/var(--tw-bg-opacity,1))}.bg-rose-700{--tw-bg-opacity:1;background-color:rgb(190 18 60/var(--tw-bg-opacity,1))}.bg-rose-800{--tw-bg-opacity:1;background-color:rgb(159 18 57/var(--tw-bg-opacity,1))}.bg-teal-100{--tw-bg-opacity:1;background-color:rgb(204 251 241/var(--tw-bg-opacity,1))}.bg-teal-200{--tw-bg-opacity:1;background-color:rgb(153 246 228/var(--tw-bg-opacity,1))}.bg-teal-50{--tw-bg-opacity:1;background-color:rgb(240 253 250/var(--tw-bg-opacity,1))}.bg-teal-500{--tw-bg-opacity:1;background-color:rgb(20 184 166/var(--tw-bg-opacity,1))}.bg-teal-600{--tw-bg-opacity:1;background-color:rgb(13 148 136/var(--tw-bg-opacity,1))}.bg-teal-700{--tw-bg-opacity:1;background-color:rgb(15 118 110/var(--tw-bg-opacity,1))}.bg-teal-800{--tw-bg-opacity:1;background-color:rgb(17 94 89/var(--tw-bg-opacity,1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}.from-\[\#0f172a\]{--tw-gradient-from:#0f172a var(--tw-gradient-from-position);--tw-gradient-to:rgba(15,23,42,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-amber-500{--tw-gradient-from:#f59e0b var(--tw-gradient-from-position);--tw-gradient-to:rgba(245,158,11,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-gray-900{--tw-gradient-from:#111827 var(--tw-gradient-from-position);--tw-gradient-to:rgba(17,24,39,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.via-\[\#1e3a8a\]{--tw-gradient-to:rgba(30,58,138,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#1e3a8a var(--tw-gradient-via-position),var(--tw-gradient-to)}.via-rose-500{--tw-gradient-to:rgba(244,63,94,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#f43f5e var(--tw-gradient-via-position),var(--tw-gradient-to)}.to-\[\#1e3a8a\]{--tw-gradient-to:#1e3a8a var(--tw-gradient-to-position)}.to-\[\#312e81\]{--tw-gradient-to:#312e81 var(--tw-gradient-to-position)}.to-indigo-500{--tw-gradient-to:#6366f1 var(--tw-gradient-to-position)}.to-rose-500{--tw-gradient-to:#f43f5e var(--tw-gradient-to-position)}.p-0{padding:0}.p-2{padding:.5rem}.p-3{padding:.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-0\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pl-2{padding-left:.5rem}.pl-4{padding-left:1rem}.pr-2{padding-right:.5rem}.pr-4{padding-right:1rem}.pt-1{padding-top:.25rem}.pt-2{padding-top:.5rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.text-start{text-align:start}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.tracking-wider{letter-spacing:.05em}.text-amber-100{--tw-text-opacity:1;color:rgb(254 243 199/var(--tw-text-opacity,1))}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138/var(--tw-text-opacity,1))}.text-amber-50{--tw-text-opacity:1;color:rgb(255 251 235/var(--tw-text-opacity,1))}.text-amber-500{--tw-text-opacity:1;color:rgb(245 158 11/var(--tw-text-opacity,1))}.text-amber-600{--tw-text-opacity:1;color:rgb(217 119 6/var(--tw-text-opacity,1))}.text-amber-700{--tw-text-opacity:1;color:rgb(180 83 9/var(--tw-text-opacity,1))}.text-amber-800{--tw-text-opacity:1;color:rgb(146 64 14/var(--tw-text-opacity,1))}.text-blue-100{--tw-text-opacity:1;color:rgb(219 234 254/var(--tw-text-opacity,1))}.text-blue-200{--tw-text-opacity:1;color:rgb(191 219 254/var(--tw-text-opacity,1))}.text-blue-50{--tw-text-opacity:1;color:rgb(239 246 255/var(--tw-text-opacity,1))}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246/var(--tw-text-opacity,1))}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235/var(--tw-text-opacity,1))}.text-blue-700{--tw-text-opacity:1;color:rgb(29 78 216/var(--tw-text-opacity,1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175/var(--tw-text-opacity,1))}.text-emerald-100{--tw-text-opacity:1;color:rgb(209 250 229/var(--tw-text-opacity,1))}.text-emerald-200{--tw-text-opacity:1;color:rgb(167 243 208/var(--tw-text-opacity,1))}.text-emerald-50{--tw-text-opacity:1;color:rgb(236 253 245/var(--tw-text-opacity,1))}.text-emerald-500{--tw-text-opacity:1;color:rgb(16 185 129/var(--tw-text-opacity,1))}.text-emerald-600{--tw-text-opacity:1;color:rgb(5 150 105/var(--tw-text-opacity,1))}.text-emerald-700{--tw-text-opacity:1;color:rgb(4 120 87/var(--tw-text-opacity,1))}.text-emerald-800{--tw-text-opacity:1;color:rgb(6 95 70/var(--tw-text-opacity,1))}.text-gray-100{--tw-text-opacity:1;color:rgb(243 244 246/var(--tw-text-opacity,1))}.text-gray-200{--tw-text-opacity:1;color:rgb(229 231 235/var(--tw-text-opacity,1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175/var(--tw-text-opacity,1))}.text-gray-50{--tw-text-opacity:1;color:rgb(249 250 251/var(--tw-text-opacity,1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128/var(--tw-text-opacity,1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99/var(--tw-text-opacity,1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81/var(--tw-text-opacity,1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55/var(--tw-text-opacity,1))}.text-gray-900{--tw-text-opacity:1;color:rgb(17 24 39/var(--tw-text-opacity,1))}.text-green-100{--tw-text-opacity:1;color:rgb(220 252 231/var(--tw-text-opacity,1))}.text-green-200{--tw-text-opacity:1;color:rgb(187 247 208/var(--tw-text-opacity,1))}.text-green-400{--tw-text-opacity:1;color:rgb(74 222 128/var(--tw-text-opacity,1))}.text-green-50{--tw-text-opacity:1;color:rgb(240 253 244/var(--tw-text-opacity,1))}.text-green-500{--tw-text-opacity:1;color:rgb(34 197 94/var(--tw-text-opacity,1))}.text-green-600{--tw-text-opacity:1;color:rgb(22 163 74/var(--tw-text-opacity,1))}.text-green-700{--tw-text-opacity:1;color:rgb(21 128 61/var(--tw-text-opacity,1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52/var(--tw-text-opacity,1))}.text-indigo-100{--tw-text-opacity:1;color:rgb(224 231 255/var(--tw-text-opacity,1))}.text-indigo-200{--tw-text-opacity:1;color:rgb(199 210 254/var(--tw-text-opacity,1))}.text-indigo-50{--tw-text-opacity:1;color:rgb(238 242 255/var(--tw-text-opacity,1))}.text-indigo-500{--tw-text-opacity:1;color:rgb(99 102 241/var(--tw-text-opacity,1))}.text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229/var(--tw-text-opacity,1))}.text-indigo-700{--tw-text-opacity:1;color:rgb(67 56 202/var(--tw-text-opacity,1))}.text-indigo-800{--tw-text-opacity:1;color:rgb(55 48 163/var(--tw-text-opacity,1))}.text-orange-100{--tw-text-opacity:1;color:rgb(255 237 213/var(--tw-text-opacity,1))}.text-orange-200{--tw-text-opacity:1;color:rgb(254 215 170/var(--tw-text-opacity,1))}.text-orange-50{--tw-text-opacity:1;color:rgb(255 247 237/var(--tw-text-opacity,1))}.text-orange-500{--tw-text-opacity:1;color:rgb(249 115 22/var(--tw-text-opacity,1))}.text-orange-600{--tw-text-opacity:1;color:rgb(234 88 12/var(--tw-text-opacity,1))}.text-orange-700{--tw-text-opacity:1;color:rgb(194 65 12/var(--tw-text-opacity,1))}.text-orange-800{--tw-text-opacity:1;color:rgb(154 52 18/var(--tw-text-opacity,1))}.text-purple-100{--tw-text-opacity:1;color:rgb(243 232 255/var(--tw-text-opacity,1))}.text-purple-200{--tw-text-opacity:1;color:rgb(233 213 255/var(--tw-text-opacity,1))}.text-purple-50{--tw-text-opacity:1;color:rgb(250 245 255/var(--tw-text-opacity,1))}.text-purple-500{--tw-text-opacity:1;color:rgb(168 85 247/var(--tw-text-opacity,1))}.text-purple-600{--tw-text-opacity:1;color:rgb(147 51 234/var(--tw-text-opacity,1))}.text-purple-700{--tw-text-opacity:1;color:rgb(126 34 206/var(--tw-text-opacity,1))}.text-purple-800{--tw-text-opacity:1;color:rgb(107 33 168/var(--tw-text-opacity,1))}.text-red-100{--tw-text-opacity:1;color:rgb(254 226 226/var(--tw-text-opacity,1))}.text-red-200{--tw-text-opacity:1;color:rgb(254 202 202/var(--tw-text-opacity,1))}.text-red-300{--tw-text-opacity:1;color:rgb(252 165 165/var(--tw-text-opacity,1))}.text-red-400{--tw-text-opacity:1;color:rgb(248 113 113/var(--tw-text-opacity,1))}.text-red-50{--tw-text-opacity:1;color:rgb(254 242 242/var(--tw-text-opacity,1))}.text-red-500{--tw-text-opacity:1;color:rgb(239 68 68/var(--tw-text-opacity,1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38/var(--tw-text-opacity,1))}.text-red-700{--tw-text-opacity:1;color:rgb(185 28 28/var(--tw-text-opacity,1))}.text-red-800{--tw-text-opacity:1;color:rgb(153 27 27/var(--tw-text-opacity,1))}.text-rose-100{--tw-text-opacity:1;color:rgb(255 228 230/var(--tw-text-opacity,1))}.text-rose-200{--tw-text-opacity:1;color:rgb(254 205 211/var(--tw-text-opacity,1))}.text-rose-50{--tw-text-opacity:1;color:rgb(255 241 242/var(--tw-text-opacity,1))}.text-rose-500{--tw-text-opacity:1;color:rgb(244 63 94/var(--tw-text-opacity,1))}.text-rose-600{--tw-text-opacity:1;color:rgb(225 29 72/var(--tw-text-opacity,1))}.text-rose-700{--tw-text-opacity:1;color:rgb(190 18 60/var(--tw-text-opacity,1))}.text-rose-800{--tw-text-opacity:1;color:rgb(159 18 57/var(--tw-text-opacity,1))}.text-teal-100{--tw-text-opacity:1;color:rgb(204 251 241/var(--tw-text-opacity,1))}.text-teal-200{--tw-text-opacity:1;color:rgb(153 246 228/var(--tw-text-opacity,1))}.text-teal-50{--tw-text-opacity:1;color:rgb(240 253 250/var(--tw-text-opacity,1))}.text-teal-500{--tw-text-opacity:1;color:rgb(20 184 166/var(--tw-text-opacity,1))}.text-teal-600{--tw-text-opacity:1;color:rgb(13 148 136/var(--tw-text-opacity,1))}.text-teal-700{--tw-text-opacity:1;color:rgb(15 118 110/var(--tw-text-opacity,1))}.text-teal-800{--tw-text-opacity:1;color:rgb(17 94 89/var(--tw-text-opacity,1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.underline{text-decoration-line:underline}.placeholder-gray-500::-moz-placeholder{--tw-placeholder-opacity:1;color:rgb(107 114 128/var(--tw-placeholder-opacity,1))}.placeholder-gray-500::placeholder{--tw-placeholder-opacity:1;color:rgb(107 114 128/var(--tw-placeholder-opacity,1))}.opacity-0{opacity:0}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-2xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgba(0,0,0,.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color)}.shadow-lg,.shadow-sm{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgba(0,0,0,.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-filter{-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.selection\:bg-amber-100 ::-moz-selection{--tw-bg-opacity:1;background-color:rgb(254 243 199/var(--tw-bg-opacity,1))}.selection\:bg-amber-100 ::selection{--tw-bg-opacity:1;background-color:rgb(254 243 199/var(--tw-bg-opacity,1))}.selection\:text-amber-900 ::-moz-selection{--tw-text-opacity:1;color:rgb(120 53 15/var(--tw-text-opacity,1))}.selection\:text-amber-900 ::selection{--tw-text-opacity:1;color:rgb(120 53 15/var(--tw-text-opacity,1))}.selection\:bg-amber-100::-moz-selection{--tw-bg-opacity:1;background-color:rgb(254 243 199/var(--tw-bg-opacity,1))}.selection\:bg-amber-100::selection{--tw-bg-opacity:1;background-color:rgb(254 243 199/var(--tw-bg-opacity,1))}.selection\:text-amber-900::-moz-selection{--tw-text-opacity:1;color:rgb(120 53 15/var(--tw-text-opacity,1))}.selection\:text-amber-900::selection{--tw-text-opacity:1;color:rgb(120 53 15/var(--tw-text-opacity,1))}.hover\:bg-blue-100:hover{--tw-bg-opacity:1;background-color:rgb(219 234 254/var(--tw-bg-opacity,1))}.hover\:bg-gray-100:hover{--tw-bg-opacity:1;background-color:rgb(243 244 246/var(--tw-bg-opacity,1))}.hover\:bg-gray-200:hover{--tw-bg-opacity:1;background-color:rgb(229 231 235/var(--tw-bg-opacity,1))}.hover\:bg-gray-50:hover{--tw-bg-opacity:1;background-color:rgb(249 250 251/var(--tw-bg-opacity,1))}.hover\:bg-red-100:hover{--tw-bg-opacity:1;background-color:rgb(254 226 226/var(--tw-bg-opacity,1))}.hover\:text-gray-600:hover{--tw-text-opacity:1;color:rgb(75 85 99/var(--tw-text-opacity,1))}.hover\:text-gray-900:hover{--tw-text-opacity:1;color:rgb(17 24 39/var(--tw-text-opacity,1))}.focus\:border-blue-500:focus{--tw-border-opacity:1;border-color:rgb(59 130 246/var(--tw-border-opacity,1))}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus\:ring-blue-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(59 130 246/var(--tw-ring-opacity,1))}.group:hover .group-hover\:opacity-100{opacity:1}@media (min-width:768px){.md\:flex{display:flex}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.md\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}}@media (min-width:1024px){.lg\:col-span-2{grid-column:span 2/span 2}.lg\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.lg\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.lg\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}}</style>
+</head>
+<body class="min-h-screen font-arabic selection:bg-amber-100 selection:text-amber-900">
+
+<button class="lang-toggle" onclick="app.toggleLang()" id="langToggle">EN / AR</button>
+
+<div id="toast" class="toast"></div>
+
+<div id="authView" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#312e81] px-4">
+  <div class="glass w-full max-w-md rounded-2xl p-8 shadow-2xl border border-white/20 relative overflow-hidden">
+    
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-500"></div>
+    <div class="relative z-10 text-center mb-6">
+      <div class="logo-box mx-auto mb-3">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold text-white" id="authTitle">الباشمحاسب</h2>
+      <p class="text-amber-100 text-sm mt-1" id="authSub">نظام المحاسبة الاحترافي</p>
+    </div>
+
+    <form id="loginForm" class="space-y-4" onsubmit="app.login(event); return false;">
+      <h3 class="text-lg font-semibold text-white" id="loginHeading">تسجيل الدخول</h3>
+      <div class="input-group">
+        <input type="email" id="loginEmail" placeholder="" required>
+        <span class="input-icon">✉️</span>
+      </div>
+      <div class="input-group">
+        <input type="password" id="loginPassword" placeholder="" required>
+        <span class="input-icon">🔒</span>
+      </div>
+      <p class="text-sm text-center"><button type="button" id="forgotBtn" class="text-amber-200 underline">نسيت كلمة المرور؟</button></p>
+      <button type="submit" id="btnLogin" class="w-full btn-primary py-3 rounded-xl font-bold text-lg">تسجيل الدخول</button>
+      <p class="text-center text-sm text-amber-200 mt-4"><span id="noAccount">ليس لديك حساب؟</span> <button type="button" id="showRegister" class="text-white underline font-semibold">إنشاء حساب جديد</button></p>
+    </form>
+
+    <form id="registerForm" class="space-y-4 hidden" onsubmit="app.register(event); return false;">
+      <h3 class="text-lg font-semibold text-white" id="registerHeading">إنشاء حساب جديد</h3>
+      <div class="input-group">
+        <input type="text" id="regName" placeholder="" required class="text-gray-900 bg-white border-gray-300 placeholder-gray-500">
+        <span class="input-icon">👤</span>
+      </div>
+      <div class="input-group">
+        <input type="email" id="regEmail" placeholder="" required class="text-gray-900 bg-white border-gray-300 placeholder-gray-500">
+        <span class="input-icon">✉️</span>
+      </div>
+      <div class="input-group">
+        <input type="password" id="regPassword" placeholder="" required minlength="6" class="text-gray-900 bg-white border-gray-300 placeholder-gray-500">
+        <span class="input-icon">🔒</span>
+      </div>
+      <label class="flex items-start gap-2 text-sm text-amber-100"><input type="checkbox" id="regTerms" required style="width:auto;margin-top:7px"><span><span id="termsText">أوافق على</span> <a id="termsLink" href="legal.html" target="_blank" rel="noopener" class="underline text-white">الشروط وسياسة الخصوصية</a></span></label>
+      <button type="submit" id="btnRegister" class="w-full btn-success py-3 rounded-xl font-bold text-lg">إنشاء الحساب</button>
+      <p class="text-center text-sm text-amber-200 mt-4"><span id="haveAccount">لديك حساب بالفعل؟</span> <button type="button" id="showLogin" class="text-white underline font-semibold">تسجيل الدخول</button></p>
+    </form>
+
+    <div id="authMsg" class="mt-4 text-sm text-red-300 text-center hidden"></div>
+  </div>
+</div>
+
+<div id="appView" class="hidden h-screen flex overflow-hidden">
+  <aside class="sidebar bg-white border-r border-gray-200 z-20 flex flex-col">
+    <div class="p-5 border-b border-gray-100 flex items-center gap-3">
+      <div class="logo-box">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+      </div>
+      <div>
+        <div class="font-bold text-gray-900 text-sm" id="sidebarBrand">الباشمحاسب</div>
+        <div class="text-[10px] text-gray-500 font-medium" id="sidebarSub">المحاسب الأول</div>
+      </div>
+    </div>
+
+    <nav class="flex-1 py-4 overflow-y-auto">
+      <div class="px-4 mb-2 text-xs font-bold text-gray-400 uppercase tracking-wider" id="navSecMain">الرئيسية</div>
+      <button class="nav-item w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-50 flex items-center gap-3" data-page="dashboard" onclick="app.navigate('dashboard')"><span>🏠</span><span class="font-medium" id="navDashboard">لوحة التحكم</span></button>
+      <button class="nav-item w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-50 flex items-center gap-3" data-page="accounts" onclick="app.navigate('accounts')"><span>📊</span><span class="font-medium" id="navAccounts">دليل الحسابات</span></button>
+      <button class="nav-item w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-50 flex items-center gap-3" data-page="journal" onclick="app.navigate('journal')"><span>📝</span><span class="font-medium" id="navJournal">دفتر اليومية</span></button>
+      <button class="nav-item w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-50 flex items-center gap-3" data-page="ledger" onclick="app.navigate('ledger')"><span>📗</span><span class="font-medium" id="navLedger">دفتر الأستاذ العام</span></button>
+      <button class="nav-item w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-50 flex items-center gap-3" data-page="trial" onclick="app.navigate('trial')"><span>⚖️</span><span class="font-medium" id="navTrial">ميزان المراجعة</span></button>
+      <button class="nav-item w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-50 flex items-center gap-3" data-page="income" onclick="app.navigate('income')"><span>📈</span><span class="font-medium" id="navIncome">قائمة الدخل</span></button>
+      <button class="nav-item w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-50 flex items-center gap-3" data-page="balance" onclick="app.navigate('balance')"><span>🏦</span><span class="font-medium" id="navBalance">الميزانية العمومية</span></button>
+
+      <div class="px-4 mb-2 mt-6 text-xs font-bold text-gray-400 uppercase tracking-wider" id="navSecSettings">الإعدادات</div>
+      <button class="nav-item w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-50 flex items-center gap-3" data-page="settings" onclick="app.navigate('settings')"><span>⚙️</span><span class="font-medium" id="navSettings">الإعدادات والملف الشخصي</span></button>
+      <button class="nav-item w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-50 hidden flex items-center gap-3" id="navAdminBtn" data-page="admin" onclick="app.navigate('admin')"><span>🛡️</span><span class="font-medium" id="navAdmin">الإدارة</span><span id="adminBadge" class="hidden bg-red-500 text-white text-xs rounded-full px-2"></span></button>
+      <button class="nav-item w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-50 flex items-center gap-3 text-red-600 font-medium" onclick="app.logout()"><span>🚪</span><span class="font-medium" id="navLogout">تسجيل الخروج</span></button>
+    </nav>
+
+    <div class="p-4 border-t border-gray-100 bg-gray-50">
+      <div id="currentUserDisplay" class="text-xs text-gray-500 text-center"></div>
+      <div class="mt-2 flex justify-center gap-3 text-xs"><a id="lnkLegal" href="legal.html" target="_blank" rel="noopener" class="text-gray-500 underline">الشروط والخصوصية</a><a id="lnkSupport" href="#" target="_blank" rel="noopener" class="text-gray-500 underline">الدعم</a></div>
+    </div>
+  </aside>
+
+  <div class="main-content bg-gray-50 overflow-y-auto relative">
+    <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm sticky top-0 z-10">
+      <div class="flex items-center gap-3">
+        <h1 id="pageTitle" class="text-xl font-bold text-gray-800">لوحة التحكم</h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-medium border border-blue-100">
+          <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> <span id="statusConnected">متصل</span>
+        </span>
+        <button onclick="app.logout()" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition" id="btnHeaderLogout">تسجيل الخروج</button>
+      </div>
+    </header>
+
+    <div id="subBanner" class="hidden no-print"></div>
+    <main class="p-6">
+      <div id="pageContainer"></div>
+    </main>
+  </div>
+</div>
+
+<div id="resetModal" class="modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content p-6">
+    <h3 class="text-lg font-bold text-gray-800 mb-4" id="resetTitle">تعيين كلمة مرور جديدة</h3>
+    <form onsubmit="app.setNewPassword(event); return false;" class="space-y-4">
+      <input type="password" id="newPassword" minlength="6" required class="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none bg-white text-gray-900">
+      <button type="submit" id="btnSetPass" class="w-full btn-primary py-2 rounded-lg font-bold">حفظ</button>
+    </form>
+  </div>
+</div>
+
+<div id="accountModal" class="modal">
+  <div class="modal-backdrop" onclick="closeModal('accountModal')"></div>
+  <div class="modal-content p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-bold text-gray-800" id="accountModalTitle">إضافة حساب جديد</h3>
+      <button onclick="closeModal('accountModal')" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+    </div>
+    <form id="accountForm" class="space-y-4" onsubmit="return app.saveAccount(event)">
+      <input type="hidden" id="accountId">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1" id="lblAccountCode">رقم الحساب</label>
+          <input type="text" id="accountCode" placeholder="مثال: 1101" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-900">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1" id="lblAccountType">نوع الحساب</label>
+          <select id="accountType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900">
+            <option value="asset">أصول</option>
+            <option value="liability">خصوم</option>
+            <option value="equity">حقوق ملكية</option>
+            <option value="revenue">إيرادات</option>
+            <option value="expense">مصروفات</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1" id="lblAccountName">اسم الحساب</label>
+        <input type="text" id="accountName" placeholder="مثال: حساب النقدية" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-900">
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button type="button" onclick="closeModal('accountModal')" class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50" id="btnCancel">إلغاء</button>
+        <button type="submit" id="btnSaveAccount" class="px-5 py-2 rounded-lg btn-primary text-white font-medium">حفظ الحساب</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="journalModal" class="modal">
+  <div class="modal-backdrop" onclick="closeModal('journalModal')"></div>
+  <div class="modal-content p-6 max-w-2xl w-full">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-bold text-gray-800" id="journalModalTitle">إضافة قيد يومي جديد</h3>
+      <button onclick="closeModal('journalModal')" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+    </div>
+    <form id="journalForm" class="space-y-4" onsubmit="return app.saveJournalEntry(event)">
+      <input type="hidden" id="journalEntryId">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1" id="lblJournalDate">التاريخ</label>
+          <input type="date" id="journalDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1" id="lblDebitAccount">حساب المدينة</label>
+          <select id="journalDebitAccount" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1" id="lblDebitAmount">مبلغ المدينة</label>
+          <input type="number" id="journalDebitAmount" placeholder="0.00" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900">
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1" id="lblRef">رقم القيد / مرجع</label>
+          <input type="text" id="journalReference" placeholder="رقم مستند / مرجع" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1" id="lblCreditAccount">حساب الدائن</label>
+          <select id="journalCreditAccount" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1" id="lblCreditAmount">مبلغ الدائن</label>
+          <input type="number" id="journalCreditAmount" placeholder="0.00" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900">
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1" id="lblDescription">بيان القيد / الوصف</label>
+        <textarea id="journalDescription" rows="2" placeholder="وصف القيد..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900"></textarea>
+      </div>
+      <div id="journalBalanceMsg" class="text-sm text-red-600 hidden">⚠️ المدينة غير مساوية للدائن، القيد غير متوازن.</div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button type="button" onclick="closeModal('journalModal')" class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">إلغاء</button>
+        <button type="submit" id="btnSaveJournal" class="px-5 py-2 rounded-lg btn-success text-white font-medium">إضافة القيد</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://alrtkjveszbkyogkecyf.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_q52jBlh5P0qEGXcnIsGrOA_pvJJP0Aw';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ===== إعدادات الإطلاق / Launch settings ===== */
+const CFG = {
+  TRIAL_DAYS: 14,                       // يجب أن يطابق مدة التجربة في ملف SQL
+  PAY_LINKS: { basic: '[رابط-دفع-الأساسية]', pro: '[رابط-دفع-الاحترافية]', office: '[رابط-دفع-المكاتب]' }, // روابط Stripe Payment Links
+  SUPPORT_WA: '[رقم-الواتساب-بدون-+]',
+  LEGAL_URL: 'legal.html',
+  PAY_METHODS: { stripe: true, paymob: true, manual: true },  // عطّلي أي وسيلة لا تستخدمينها
+  MONTHS: [1, 3, 12],                                          // مدد الدفع المسبق (Paymob والتحويل اليدوي)
+  MANUAL: { instapay: '[عنوان إنستاباي]', vodafone: '[رقم فودافون كاش]', bank: '[بيانات الحساب البنكي / IBAN]' }
+};
+const DEFAULT_COA = [['1101','النقدية في الصندوق','Cash on hand','asset'],['1102','البنك','Bank account','asset'],['1103','العملاء (ذمم مدينة)','Accounts receivable','asset'],['1104','المخزون','Inventory','asset'],['1105','مصروفات مدفوعة مقدماً','Prepaid expenses','asset'],['1201','المعدات والأجهزة','Equipment','asset'],['1202','الأثاث','Furniture','asset'],['1203','السيارات','Vehicles','asset'],
+['2101','الموردون (ذمم دائنة)','Accounts payable','liability'],['2102','مصروفات مستحقة','Accrued expenses','liability'],['2103','رواتب مستحقة','Salaries payable','liability'],['2104','عربون عملاء (إيراد مقدم)','Customer deposits','liability'],['2201','قروض بنكية','Bank loans','liability'],
+['3101','رأس المال','Owner capital','equity'],['3102','المسحوبات الشخصية','Owner drawings','equity'],['3103','الأرباح المحتجزة','Retained earnings','equity'],['3104','أرصدة افتتاحية','Opening balance equity','equity'],
+['4101','إيرادات المبيعات','Sales revenue','revenue'],['4102','إيرادات الخدمات','Service revenue','revenue'],['4103','إيرادات أخرى','Other income','revenue'],
+['5101','تكلفة البضاعة المباعة','Cost of goods sold','expense'],['5201','الرواتب والأجور','Salaries and wages','expense'],['5202','الإيجار','Rent','expense'],['5203','الكهرباء والمياه والإنترنت','Utilities and internet','expense'],['5204','الدعاية والإعلان','Marketing and advertising','expense'],['5205','النقل والتوصيل','Transport and delivery','expense'],['5206','رسوم بنكية','Bank charges','expense'],['5207','مصروفات متنوعة','Miscellaneous expenses','expense']];
+
+const T = {
+  ar: {
+    navAdmin:'الإدارة', adminTitle:'طلبات التحويل اليدوي', adminAll:'الكل', approve:'موافقة', reject:'رفض', confirmApprove:'هل تأكدتِ أن المبلغ وصل فعلاً؟ سيتم تفعيل الاشتراك.', confirmReject:'رفض هذا الطلب؟', noRequests:'لا توجد طلبات', userCol:'المستخدم', periodCol:'المدة', dateCol:'التاريخ', statusCol:'الحالة',
+    payCard:'دفع بالبطاقة (Stripe، تجديد تلقائي)', payPaymob:'دفع عبر Paymob (مصر)', payMonths:'مدة الاشتراك (Paymob والتحويل)', monthsN:'{n} شهر', payManualTitle:'تحويل يدوي: إنستاباي / فودافون كاش / بنك', manualHow:'حوّلي المبلغ ثم أدخلي رقم العملية، وسنفعّل حسابك بعد التأكد من وصول المبلغ (عادةً خلال [24] ساعة).', method:'وسيلة التحويل', mInstapay:'إنستاباي', mVodafone:'فودافون كاش', mBank:'تحويل بنكي', reference:'رقم العملية / المرجع', sendRequest:'إرسال طلب التفعيل', requestSent:'تم استلام طلبك وسيُفعّل بعد المراجعة', payRedirect:'جاري تحويلك لصفحة الدفع...', payFailed:'تعذّر بدء الدفع، حاول لاحقاً', waitPay:'ننتظر تأكيد الدفع...', paidOk:'تم تفعيل اشتراكك 🎉', myRequests:'طلباتك', stPending:'قيد المراجعة', stApproved:'تمت الموافقة', stRejected:'مرفوض', plan:'الخطة',
+    forgot:'نسيت كلمة المرور؟', resetSent:'أرسلنا رابط إعادة التعيين إلى بريدك', resetTitle:'تعيين كلمة مرور جديدة', saveBtn:'حفظ', passUpdated:'تم تحديث كلمة المرور', terms:'أوافق على', termsLink:'الشروط وسياسة الخصوصية', legal:'الشروط والخصوصية', support:'الدعم', trialLeft:'تجربة مجانية: متبقٍ {n} يوم', upgrade:'اشترك الآن', expiredTitle:'انتهت فترة التجربة', expiredText:'بياناتك محفوظة. اشترك لمتابعة التسجيل وعرض التقارير، ويمكنك تصدير بياناتك من الإعدادات في أي وقت.', planBasic:'الأساسية', planPro:'الاحترافية', planOffice:'للمكاتب', loadDefault:'تحميل دليل الحسابات الجاهز', defaultLoaded:'تم تحميل دليل الحسابات', print:'طباعة / PDF', from:'من', to:'إلى', thisMonth:'هذا الشهر', thisYear:'هذه السنة', allTime:'الكل', openingBal:'الرصيد الافتتاحي', accessExpired:'انتهى اشتراكك، اشترك لمتابعة الحفظ', limitReached:'وصلت للحد الأقصى للحسابات في خطتك', dupCode:'رقم الحساب مستخدم بالفعل', mustAgree:'يجب الموافقة على الشروط',
+    cancel: 'إلغاء', save: 'حفظ الحساب', mainSection: 'الرئيسية', settingsSection: 'الإعدادات', debitWord: 'مدين', creditWord: 'دائن', total: 'الإجمالي', balanceCol: 'الرصيد', checkEmail: 'تم إنشاء الحساب، تحقق من بريدك الإلكتروني لتأكيده', addAccountFirst: 'أضف حساباً واحداً على الأقل من دليل الحسابات أولاً', loadError: 'تعذّر تحميل البيانات',
+    appTitle: 'الباشمحاسب | نظام المحاسبة الاحترافي',
+    authTitle: 'الباشمحاسب',
+    authSub: 'نظام المحاسبة الاحترافي',
+    loginHeading: 'تسجيل الدخول',
+    registerHeading: 'إنشاء حساب جديد',
+    emailPlaceholder: 'البريد الإلكتروني',
+    passwordPlaceholder: 'كلمة المرور',
+    namePlaceholder: 'الاسم الكامل',
+    btnLogin: 'تسجيل الدخول',
+    btnRegister: 'إنشاء الحساب',
+    noAccount: 'ليس لديك حساب؟',
+    createAccount: 'إنشاء حساب جديد',
+    haveAccount: 'لديك حساب بالفعل؟',
+    signIn: 'تسجيل الدخول',
+    authErrorFill: 'الرجاء تعبئة البريد وكلمة المرور',
+    authErrorInvalid: 'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+    regErrorFill: 'الرجاء تعبئة جميع الحقول',
+    regErrorPass: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
+    regErrorExists: 'هذا البريد مسجل مسبقاً',
+    sidebarBrand: 'الباشمحاسب',
+    sidebarSub: 'المحاسب الأول',
+    navDashboard: 'لوحة التحكم',
+    navAccounts: 'دليل الحسابات',
+    navJournal: 'دفتر اليومية',
+    navLedger: 'دفتر الأستاذ العام',
+    navTrial: 'ميزان المراجعة',
+    navIncome: 'قائمة الدخل',
+    navBalance: 'الميزانية العمومية',
+    navSettings: 'الإعدادات والملف الشخصي',
+    navLogout: 'تسجيل الخروج',
+    currentUser: 'المستخدم:',
+    dashboard: 'لوحة التحكم',
+    accounts: 'دليل الحسابات (Chart of Accounts)',
+    accountsSub: 'إدارة الحسابات المستخدمة في القيد المزدوج.',
+    addAccount: '+ إضافة حساب جديد',
+    journal: 'دفتر اليومية (General Journal)',
+    journalSub: 'تسجيل القيدات اليومية بطريقة القيد المزدوج.',
+    addJournal: '+ قيد يومي جديد',
+    ledger: 'دفتر الأستاذ العام (General Ledger)',
+    ledgerSub: 'اختر حساباً لعرض حركاته ورصيده.',
+    trial: 'ميزان المراجعة (Trial Balance)',
+    trialSub: 'تأكيد تساوي مجموع أرصدة المدينة والدائن.',
+    income: 'قائمة الدخل / حساب الأرباح والخسائر (Income Statement)',
+    incomeSub: 'الإيرادات ناقص المصروفات تساوي صافي الربح أو الخسارة.',
+    balance: 'الميزانية العمومية (Balance Sheet)',
+    balanceSub: 'الأصول = الخصوم + حقوق الملكية (بما فيها صافي الربح/الخسارة).',
+    settings: 'الإعدادات والملف الشخصي',
+    settingsData: 'بياناتك مخزنة في Supabase ومعزولة عن مستخدمي النظام الآخرين.',
+    exportData: 'تصدير بيانات JSON',
+    clearData: 'مسح بياناتي',
+    logout: 'تسجيل الخروج',
+    connected: 'متصل',
+    totalAssets: 'إجمالي الأصول',
+    totalLiabilities: 'إجمالي الخصوم',
+    totalEquity: 'حقوق الملكية',
+    netProfit: 'صافي الربح (الخسارة)',
+    recentEntries: 'آخر القيدات اليومية',
+    quickStats: 'إحصائيات سريعة',
+    totalAccounts: 'إجمالي حسابات دليل الحسابات',
+    totalEntries: 'إجمالي القيدات اليومية',
+    totalDebit: 'إجمالي المدينة (مدين)',
+    totalCredit: 'إجمالي الدائن (دائن)',
+    noEntries: 'لا توجد قيدات بعد',
+    noData: 'لا توجد بيانات',
+    accountCode: 'رقم الحساب',
+    accountType: 'نوع الحساب',
+    accountName: 'اسم الحساب',
+    assetType: 'أصول',
+    liabilityType: 'خصوم',
+    equityType: 'حقوق ملكية',
+    revenueType: 'إيرادات',
+    expenseType: 'مصروفات',
+    naturalDebit: 'مدين طبيعي',
+    naturalCredit: 'دائن طبيعي',
+    edit: 'تعديل',
+    delete: 'حذف',
+    confirmDeleteAccount: 'هل أنت متأكد من حذف هذا الحساب؟ لن يتم حذفه إذا كان مستخدماً في قيود.',
+    accountUsed: 'لا يمكن حذف حساب مستخدم في قيود يومية.',
+    date: 'التاريخ',
+    ref: 'مرجع',
+    debit: 'المدينة',
+    credit: 'الدائن',
+    amount: 'المبلغ',
+    description: 'الوصف',
+    account: 'الحساب المقابل',
+    debitAccount: 'حساب المدينة',
+    creditAccount: 'حساب الدائن',
+    debitAmount: 'مبلغ المدينة',
+    creditAmount: 'مبلغ الدائن',
+    journalEntry: 'إضافة قيد يومي جديد',
+    balanceError: '⚠️ المدينة غير مساوية للدائن، القيد غير متوازن.',
+    saveJournal: 'إضافة القيد',
+    confirmDeleteJournal: 'حذف القيد؟',
+    noJournalEntries: 'لا توجد قيدات مسجلة',
+    noMovements: 'لا توجد حركات لهذا الحساب',
+    totalDebitLabel: 'إجمالي المدينة:',
+    totalCreditLabel: 'إجمالي الدائن:',
+    trialBalanced: '✅ المتوازن - القيد صحيح',
+    trialNotBalanced: '❌ غير متوازن - الفرق: ',
+    generatedOn: 'تاريخ التوليد:',
+    revenues: 'الإيرادات (Revenues)',
+    expenses: 'المصروفات (Expenses)',
+    totalRevenues: 'إجمالي الإيرادات',
+    totalExpenses: 'إجمالي المصروفات',
+    netProfitLoss: 'صافي الربح / الخسارة',
+    profit: 'العملية حققت أرباحاً',
+    loss: 'العملية حققت خسارة',
+    assets: 'الأصول (Assets)',
+    liabilitiesEquity: 'الخصوم وحقوق الملكية (Liabilities & Equity)',
+    netProfitLossYear: 'صافي الربح (الخسارة) للسنة',
+    totalLiabilitiesEquity: 'إجمالي الخصوم وحقوق الملكية',
+    totalAssetsLabel: 'إجمالي الأصول',
+    totalLiabEquityLabel: 'إجمالي الخصوم + الملكية + الربح',
+    balanced: '✅ متوازنة',
+    notBalanced: '❌ غير متوازنة',
+    profile: 'الملف الشخصي والإعدادات',
+    memberSince: 'member since',
+    fillEmailPass: 'الرجاء تعبئة البريد وكلمة المرور',
+    fillAll: 'الرجاء تعبئة جميع الحقول',
+    passLength: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
+    emailExists: 'هذا البريد مسجل مسبقاً',
+    fillCodeName: 'الرجاء تعبئة رمز واسم الحساب',
+    codeExists: 'رمز الحساب مكرر',
+    fillDateAccounts: 'الرجاء اختيار التاريخ والحسابات',
+    diffAccounts: 'حساب المدينة والدائن يجب أن يكونا مختلفين',
+    amountPositive: 'المبالغ يجب أن تكون أكبر من صفر',
+    confirmClear: 'هذا سيحذف جميع حساباتك وقيداتك نهائياً ولا يمكن استعادتها. متابع؟',
+    cleared: 'تم مسح بياناتك.',
+    clearConfirmDelete: 'هل أنت متأكد من حذف هذا الحساب؟ لن يتم حذفه إذا كان مستخدماً في قيود.',
+    loading: 'جاري التحميل...',
+    success: 'تم بنجاح',
+    error: 'حدث خطأ',
+    selectAccount: 'اختر حساباً'
+  },
+  en: {
+    navAdmin:'Admin', adminTitle:'Manual transfer requests', adminAll:'All', approve:'Approve', reject:'Reject', confirmApprove:'Have you confirmed the money actually arrived? The subscription will be activated.', confirmReject:'Reject this request?', noRequests:'No requests', userCol:'User', periodCol:'Period', dateCol:'Date', statusCol:'Status',
+    payCard:'Pay by card (Stripe, auto-renew)', payPaymob:'Pay with Paymob (Egypt)', payMonths:'Subscription length (Paymob and transfer)', monthsN:'{n} month(s)', payManualTitle:'Manual transfer: InstaPay / Vodafone Cash / bank', manualHow:'Transfer the amount, then enter the transaction number. We activate your account after confirming receipt (usually within [24] hours).', method:'Transfer method', mInstapay:'InstaPay', mVodafone:'Vodafone Cash', mBank:'Bank transfer', reference:'Transaction number / reference', sendRequest:'Send activation request', requestSent:'Request received; it will be activated after review', payRedirect:'Redirecting to payment...', payFailed:'Could not start payment, try again later', waitPay:'Waiting for payment confirmation...', paidOk:'Your subscription is active 🎉', myRequests:'Your requests', stPending:'Pending review', stApproved:'Approved', stRejected:'Rejected', plan:'Plan',
+    forgot:'Forgot password?', resetSent:'We sent a reset link to your email', resetTitle:'Set a new password', saveBtn:'Save', passUpdated:'Password updated', terms:'I agree to the', termsLink:'Terms and Privacy Policy', legal:'Terms & Privacy', support:'Support', trialLeft:'Free trial: {n} days left', upgrade:'Subscribe now', expiredTitle:'Your free trial has ended', expiredText:'Your data is safe. Subscribe to keep recording and viewing reports. You can export your data from Settings anytime.', planBasic:'Basic', planPro:'Professional', planOffice:'For firms', loadDefault:'Load ready-made chart of accounts', defaultLoaded:'Chart of accounts loaded', print:'Print / PDF', from:'From', to:'To', thisMonth:'This month', thisYear:'This year', allTime:'All time', openingBal:'Opening balance', accessExpired:'Your subscription ended. Subscribe to keep saving', limitReached:'You reached your plan’s account limit', dupCode:'This account code already exists', mustAgree:'You must accept the terms',
+    cancel: 'Cancel', save: 'Save Account', mainSection: 'Main', settingsSection: 'Settings', debitWord: 'Debit', creditWord: 'Credit', total: 'Total', balanceCol: 'Balance', checkEmail: 'Account created. Check your email to confirm it', addAccountFirst: 'Add at least one account in the chart of accounts first', loadError: 'Could not load data',
+    appTitle: 'Basha Accountant | Professional Accounting System',
+    authTitle: 'Basha Accountant',
+    authSub: 'Professional Accounting System',
+    loginHeading: 'Login',
+    registerHeading: 'Create New Account',
+    emailPlaceholder: 'Email Address',
+    passwordPlaceholder: 'Password',
+    namePlaceholder: 'Full Name',
+    btnLogin: 'Login',
+    btnRegister: 'Create Account',
+    noAccount: 'Don\'t have an account?',
+    createAccount: 'Create New Account',
+    haveAccount: 'Already have an account?',
+    signIn: 'Login',
+    authErrorFill: 'Please enter email and password',
+    authErrorInvalid: 'Invalid email or password',
+    regErrorFill: 'Please fill all fields',
+    regErrorPass: 'Password must be at least 6 characters',
+    regErrorExists: 'This email is already registered',
+    sidebarBrand: 'Basha Accountant',
+    sidebarSub: 'Chief Accountant',
+    navDashboard: 'Dashboard',
+    navAccounts: 'Chart of Accounts',
+    navJournal: 'General Journal',
+    navLedger: 'General Ledger',
+    navTrial: 'Trial Balance',
+    navIncome: 'Income Statement',
+    navBalance: 'Balance Sheet',
+    navSettings: 'Settings & Profile',
+    navLogout: 'Logout',
+    currentUser: 'User:',
+    dashboard: 'Dashboard',
+    accounts: 'Chart of Accounts',
+    accountsSub: 'Manage accounts used in double-entry bookkeeping.',
+    addAccount: '+ Add New Account',
+    journal: 'General Journal',
+    journalSub: 'Record daily journal entries using double-entry.',
+    addJournal: '+ New Journal Entry',
+    ledger: 'General Ledger',
+    ledgerSub: 'Select an account to view its movements and balance.',
+    trial: 'Trial Balance',
+    trialSub: 'Confirm the equality of total debit and credit balances.',
+    income: 'Income Statement / Profit & Loss',
+    incomeSub: 'Revenues minus expenses equals net profit or loss.',
+    balance: 'Balance Sheet',
+    balanceSub: 'Assets = Liabilities + Equity (including net profit/loss).',
+    settings: 'Settings & Profile',
+    settingsData: 'Your data is stored in Supabase and isolated from other users.',
+    exportData: 'Export Data JSON',
+    clearData: 'Clear My Data',
+    logout: 'Logout',
+    connected: 'Connected',
+    totalAssets: 'Total Assets',
+    totalLiabilities: 'Total Liabilities',
+    totalEquity: 'Total Equity',
+    netProfit: 'Net Profit (Loss)',
+    recentEntries: 'Recent Journal Entries',
+    quickStats: 'Quick Statistics',
+    totalAccounts: 'Total Chart of Accounts',
+    totalEntries: 'Total Journal Entries',
+    totalDebit: 'Total Debit',
+    totalCredit: 'Total Credit',
+    noEntries: 'No entries yet',
+    noData: 'No data',
+    accountCode: 'Account Code',
+    accountType: 'Account Type',
+    accountName: 'Account Name',
+    assetType: 'Assets',
+    liabilityType: 'Liabilities',
+    equityType: 'Equity',
+    revenueType: 'Revenue',
+    expenseType: 'Expense',
+    naturalDebit: 'Natural Debit',
+    naturalCredit: 'Natural Credit',
+    edit: 'Edit',
+    delete: 'Delete',
+    confirmDeleteAccount: 'Are you sure you want to delete this account? It will not be deleted if used in entries.',
+    accountUsed: 'Cannot delete an account used in journal entries.',
+    date: 'Date',
+    ref: 'Reference',
+    debit: 'Debit',
+    credit: 'Credit',
+    amount: 'Amount',
+    description: 'Description',
+    account: 'Contra Account',
+    debitAccount: 'Debit Account',
+    creditAccount: 'Credit Account',
+    debitAmount: 'Debit Amount',
+    creditAmount: 'Credit Amount',
+    journalEntry: 'Add New Journal Entry',
+    balanceError: '⚠️ Debit does not equal Credit, entry is not balanced.',
+    saveJournal: 'Add Entry',
+    confirmDeleteJournal: 'Delete entry?',
+    noJournalEntries: 'No journal entries recorded',
+    noMovements: 'No movements for this account',
+    totalDebitLabel: 'Total Debit:',
+    totalCreditLabel: 'Total Credit:',
+    trialBalanced: '✅ Balanced - Entry is correct',
+    trialNotBalanced: '❌ Not balanced - Difference: ',
+    generatedOn: 'Generated on:',
+    revenues: 'Revenues',
+    expenses: 'Expenses',
+    totalRevenues: 'Total Revenues',
+    totalExpenses: 'Total Expenses',
+    netProfitLoss: 'Net Profit / Loss',
+    profit: 'The operation achieved profits',
+    loss: 'The operation achieved a loss',
+    assets: 'Assets',
+    liabilitiesEquity: 'Liabilities & Equity',
+    netProfitLossYear: 'Net Profit (Loss) for the year',
+    totalLiabilitiesEquity: 'Total Liabilities & Equity',
+    totalAssetsLabel: 'Total Assets',
+    totalLiabEquityLabel: 'Total Liabilities + Equity + Profit',
+    balanced: '✅ Balanced',
+    notBalanced: '❌ Not Balanced',
+    profile: 'Profile & Settings',
+    memberSince: 'Member since',
+    fillEmailPass: 'Please enter email and password',
+    fillAll: 'Please fill all fields',
+    passLength: 'Password must be at least 6 characters',
+    emailExists: 'This email is already registered',
+    fillCodeName: 'Please enter account code and name',
+    codeExists: 'Account code already exists',
+    fillDateAccounts: 'Please select date and accounts',
+    diffAccounts: 'Debit and Credit accounts must be different',
+    amountPositive: 'Amounts must be greater than zero',
+    confirmClear: 'This will permanently delete all your accounts and entries and cannot be recovered. Continue?',
+    cleared: 'Your data has been cleared.',
+    clearConfirmDelete: 'Are you sure you want to delete this account? It will not be deleted if used in entries.',
+    loading: 'Loading...',
+    success: 'Success',
+    error: 'Error',
+    selectAccount: 'Select an account'
+  }
+};
+
+const STORAGE_LANG = 'basha_lang';
+
+const app = {
+  currentUser: null,
+  session: null,
+  data: { accounts: [], journalEntries: [] },
+  lang: 'ar',
+
+  init() {
+    this.lang = localStorage.getItem(STORAGE_LANG) || 'ar';
+    this.applyLang();
+    this.bindAuth();
+    sb.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') setTimeout(() => document.getElementById('resetModal').classList.add('show'), 0);
+      setTimeout(() => this.handleSession(session), 0);
+    });
+  },
+
+  async handleSession(session) {
+    const user = session ? session.user : null;
+    this.session = session;
+    if (user) {
+      const isNew = !this.currentUser || this.currentUser.id !== user.id;
+      this.currentUser = user;
+      if (!isNew) return;
+      document.getElementById('authView').classList.add('hidden');
+      document.getElementById('appView').classList.remove('hidden');
+      this.applyStatic();
+      await this.loadData();
+      await this.loadSubscription();
+      await this.checkAdmin();
+      if (/[?&]paid=1/.test(location.search) && this.access !== 'paid') { this.navigate('plans'); this.toast(this.t('waitPay')); this.pollPaid(); return; }
+      this.navigate(this.access === 'expired' ? 'plans' : 'dashboard');
+    } else {
+      this.currentUser = null;
+      this.data = { accounts: [], journalEntries: [] };
+      this.isAdmin = false; document.getElementById('navAdminBtn').classList.add('hidden');
+      this.showAuth();
+    }
+  },
+
+  applyStatic() {
+    const set = (id, k) => { const el = document.getElementById(id); if (el) el.textContent = this.t(k); };
+    ['sidebarBrand','sidebarSub','navDashboard','navAccounts','navJournal','navLedger','navTrial','navIncome','navBalance','navSettings','navLogout','navAdmin'].forEach(id => set(id, id));
+    set('lnkLegal','legal'); set('lnkSupport','support'); set('resetTitle','resetTitle'); set('btnSetPass','saveBtn');
+    set('btnHeaderLogout','logout'); set('statusConnected','connected'); set('navSecMain','mainSection'); set('navSecSettings','settingsSection');
+    const opts = { asset:'assetType', liability:'liabilityType', equity:'equityType', revenue:'revenueType', expense:'expenseType' };
+    document.querySelectorAll('#accountType option').forEach(o => o.textContent = this.t(opts[o.value]));
+    this.setAuthPlaceholders();
+    if (this.currentUser) document.getElementById('currentUserDisplay').textContent = `${this.t('currentUser')} ${this.currentUser.user_metadata?.full_name || this.currentUser.email}`;
+  },
+
+  async forgot() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const msg = document.getElementById('authMsg');
+    if (!email) { msg.textContent = this.t('fillEmailPass'); msg.classList.remove('hidden'); return; }
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+    if (error) { msg.textContent = error.message; msg.classList.remove('hidden'); return; }
+    msg.classList.add('hidden'); this.toast(this.t('resetSent'));
+  },
+
+  async setNewPassword(e) {
+    e.preventDefault();
+    const { error } = await sb.auth.updateUser({ password: document.getElementById('newPassword').value });
+    if (error) { alert(this.errMsg(error)); return; }
+    closeModal('resetModal'); this.toast(this.t('passUpdated'));
+  },
+
+  async loadSubscription() {
+    const { data } = await sb.from('subscriptions').select('*').eq('user_id', this.currentUser.id).maybeSingle();
+    const now = Date.now(); this.sub = data || null; let access = 'expired', days = 0;
+    if (data && ['active','trialing'].includes(data.status) && (!data.current_period_end || new Date(data.current_period_end).getTime() > now)) access = 'paid';
+    else { days = Math.ceil((new Date(this.currentUser.created_at).getTime() + CFG.TRIAL_DAYS * 864e5 - now) / 864e5); if (days > 0) access = 'trial'; }
+    this.access = access; this.trialDays = days; this.renderBanner();
+  },
+
+  renderBanner() {
+    const el = document.getElementById('subBanner');
+    if (this.access === 'paid') { el.className = 'hidden no-print'; return; }
+    const exp = this.access === 'expired';
+    el.className = 'no-print px-6 py-2 text-sm flex items-center justify-between ' + (exp ? 'bg-red-50 text-red-700' : 'bg-amber-50 text-amber-800');
+    el.innerHTML = `<span>${exp ? this.t('expiredTitle') : this.t('trialLeft').replace('{n}', this.trialDays)}</span><button class="btn-primary px-4 py-1 rounded-lg text-sm" onclick="app.navigate('plans')">${this.t('upgrade')}</button>`;
+  },
+
+  payUrl(plan) {
+    const base = CFG.PAY_LINKS[plan]; if (!base || base.startsWith('[')) return '#';
+    return base + (base.includes('?') ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(this.currentUser.id) + '&prefilled_email=' + encodeURIComponent(this.currentUser.email);
+  },
+
+  renderPaywall(container) {
+    const exp = this.access === 'expired', M = CFG.PAY_METHODS;
+    const sel = 'w-full px-2 py-2 border border-gray-300 rounded-lg bg-white text-gray-900';
+    const plans = [['basic','planBasic'],['pro','planPro'],['office','planOffice']];
+    const card = ([k, l]) => `<div class="card"><div class="card-body"><div class="font-bold text-lg mb-3">${this.t(l)}</div>
+      ${M.stripe ? `<a class="btn-primary block py-2 rounded-lg text-white font-medium mb-2" href="${this.payUrl(k)}" target="_blank" rel="noopener">💳 ${this.t('payCard')}</a>` : ''}
+      ${M.paymob ? `<button type="button" class="btn-success block w-full py-2 rounded-lg text-white font-medium" onclick="app.payPaymob('${k}')">🇪🇬 ${this.t('payPaymob')}</button>` : ''}</div></div>`;
+    container.innerHTML = `<div class="max-w-3xl mx-auto text-center fade-in">
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">${exp ? this.t('expiredTitle') : this.t('upgrade')}</h2>
+      <p class="text-gray-500 mb-4">${this.t('expiredText')}</p>
+      <div class="max-w-xs mx-auto mb-5 text-start"><label class="block text-sm text-gray-600 mb-1">${this.t('payMonths')}</label>
+        <select id="payMonths" class="${sel}">${CFG.MONTHS.map(m => `<option value="${m}">${this.t('monthsN').replace('{n}', m)}</option>`).join('')}</select></div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">${plans.map(card).join('')}</div>
+      ${M.manual ? `<div class="card mt-6 text-start"><div class="card-body">
+        <h3 class="font-bold text-gray-800 mb-1">${this.t('payManualTitle')}</h3>
+        <p class="text-sm text-gray-500 mb-3">${this.t('manualHow')}</p>
+        <div class="text-sm text-gray-700 mb-4 space-y-1"><div>🏦 ${this.t('mInstapay')}: <b dir="ltr">${CFG.MANUAL.instapay}</b></div><div>📱 ${this.t('mVodafone')}: <b dir="ltr">${CFG.MANUAL.vodafone}</b></div><div>🏛️ ${this.t('mBank')}: <b dir="ltr">${CFG.MANUAL.bank}</b></div></div>
+        <form onsubmit="app.submitManual(event); return false;" class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <select id="mPlan" class="${sel}">${plans.map(([k, l]) => `<option value="${k}">${this.t(l)}</option>`).join('')}</select>
+          <select id="mMethod" class="${sel}"><option value="instapay">${this.t('mInstapay')}</option><option value="vodafone">${this.t('mVodafone')}</option><option value="bank">${this.t('mBank')}</option></select>
+          <input id="mRef" required minlength="4" maxlength="80" placeholder="${this.t('reference')}" class="${sel}">
+          <button class="btn-primary py-2 rounded-lg text-white font-medium">${this.t('sendRequest')}</button></form>
+        <div id="myRequests" class="mt-4 text-sm"></div></div></div>` : ''}
+      <button class="mt-6 text-sm text-gray-500 underline" onclick="app.navigate('settings')">${this.t('exportData')}</button></div>`;
+    if (M.manual) this.loadMyRequests();
+  },
+
+  async checkAdmin() {
+    const { data } = await sb.from('admins').select('user_id').eq('user_id', this.currentUser.id).maybeSingle();
+    this.isAdmin = !!data; document.getElementById('navAdminBtn').classList.toggle('hidden', !this.isAdmin);
+    if (this.isAdmin) this.updateAdminBadge();
+  },
+  async updateAdminBadge() {
+    const { data } = await sb.rpc('admin_list_requests', { p_status: 'pending' });
+    const n = (data || []).length, b = document.getElementById('adminBadge');
+    b.textContent = n; b.classList.toggle('hidden', !n);
+  },
+  async renderAdmin(container, status = 'pending') {
+    if (!this.isAdmin) { container.innerHTML = ''; return; }
+    this.adminStatus = status;
+    const { data, error } = await sb.rpc('admin_list_requests', { p_status: status });
+    if (error) { container.innerHTML = `<div class="card"><div class="card-body text-red-600">${this.esc(error.message)}</div></div>`; return; }
+    const st = { pending: 'stPending', approved: 'stApproved', rejected: 'stRejected' };
+    const tab = (k, l) => `<button class="px-3 py-1 rounded-lg text-sm ${status === k ? 'btn-primary text-white' : 'bg-gray-100 text-gray-700'}" onclick="app.renderAdmin(document.getElementById('pageContainer'),'${k}')">${this.t(l)}</button>`;
+    const rows = (data || []).map(r => `<tr><td>${this.esc(r.full_name || '')}<div class="text-xs text-gray-500" dir="ltr">${this.esc(r.email)}</div></td>
+      <td>${this.t({ basic: 'planBasic', pro: 'planPro', office: 'planOffice' }[r.plan])}</td><td>${this.t('monthsN').replace('{n}', r.months)}</td>
+      <td>${this.t({ instapay: 'mInstapay', vodafone: 'mVodafone', bank: 'mBank' }[r.method])}</td><td dir="ltr" class="font-mono">${this.esc(r.reference)}</td>
+      <td>${new Date(r.created_at).toLocaleDateString(this.lang === 'ar' ? 'ar-EG' : 'en-GB')}</td><td>${this.t(st[r.status])}</td>
+      <td>${r.status === 'pending' ? `<div class="flex gap-1"><button class="btn-success px-3 py-1 rounded text-white text-sm" onclick="app.reviewPayment('${r.id}',true)">${this.t('approve')}</button><button class="bg-red-500 px-3 py-1 rounded text-white text-sm" onclick="app.reviewPayment('${r.id}',false)">${this.t('reject')}</button></div>` : ''}</td></tr>`).join('');
+    container.innerHTML = `<div class="fade-in"><div class="flex gap-2 mb-4">${tab('pending', 'stPending')}${tab('all', 'adminAll')}</div>
+      <div class="card"><div class="card-body overflow-x-auto"><table class="w-full text-sm"><thead><tr><th>${this.t('userCol')}</th><th>${this.t('plan')}</th><th>${this.t('periodCol')}</th><th>${this.t('method')}</th><th>${this.t('reference')}</th><th>${this.t('dateCol')}</th><th>${this.t('statusCol')}</th><th></th></tr></thead>
+      <tbody>${rows || `<tr><td colspan="8" class="empty-state">${this.t('noRequests')}</td></tr>`}</tbody></table></div></div></div>`;
+  },
+  async reviewPayment(id, approve) {
+    if (!confirm(this.t(approve ? 'confirmApprove' : 'confirmReject'))) return;
+    const { error } = await sb.rpc('admin_review_payment', { req: id, approve });
+    if (error) { alert(this.errMsg(error)); return; }
+    this.toast(this.t('success')); this.renderAdmin(document.getElementById('pageContainer'), this.adminStatus); this.updateAdminBadge();
+  },
+
+  async payPaymob(plan) {
+    const months = +document.getElementById('payMonths').value;
+    this.toast(this.t('payRedirect'));
+    const { data, error } = await sb.functions.invoke('paymob-checkout', { body: { plan, months, redirect: location.origin + location.pathname + '?paid=1' } });
+    if (error || !data || !data.url) { alert(this.t('payFailed')); return; }
+    location.href = data.url;
+  },
+
+  async submitManual(e) {
+    e.preventDefault();
+    const row = { user_id: this.currentUser.id, plan: document.getElementById('mPlan').value, months: +document.getElementById('payMonths').value,
+      method: document.getElementById('mMethod').value, reference: document.getElementById('mRef').value.trim() };
+    const { error } = await sb.from('payment_requests').insert(row);
+    if (error) { alert(error.code === '23505' ? this.t('dupCode') : this.errMsg(error)); return; }
+    document.getElementById('mRef').value = ''; this.toast(this.t('requestSent')); this.loadMyRequests();
+  },
+
+  async loadMyRequests() {
+    const el = document.getElementById('myRequests'); if (!el) return;
+    const { data } = await sb.from('payment_requests').select('*').eq('user_id', this.currentUser.id).order('created_at', { ascending: false }).limit(5);
+    const st = { pending: 'stPending', approved: 'stApproved', rejected: 'stRejected' };
+    el.innerHTML = (data && data.length) ? `<div class="font-medium text-gray-700 mb-1">${this.t('myRequests')}</div>` + data.map(r => `<div class="text-gray-600">${this.esc(r.reference)} • ${this.t(st[r.status])}</div>`).join('') : '';
+  },
+
+  async pollPaid() {
+    for (let i = 0; i < 6 && this.access !== 'paid'; i++) { await new Promise(r => setTimeout(r, 2500)); await this.loadSubscription(); }
+    history.replaceState({}, '', location.pathname);
+    if (this.access === 'paid') { this.toast(this.t('paidOk')); this.navigate('dashboard'); }
+  },
+
+  range: { from: '', to: '' },
+  entriesFor(mode) {
+    const { from, to } = this.range;
+    return this.data.journalEntries.filter(e => { if (mode === 'all') return true; if (to && e.date > to) return false; if (mode === 'period' && from && e.date < from) return false; return true; });
+  },
+  setRange(k, v) {
+    this.range[k] = v; const sel = document.getElementById('ledgerAccount'), val = sel && sel.value;
+    this.navigate(this.currentPage);
+    if (val) { const s2 = document.getElementById('ledgerAccount'); if (s2) { s2.value = val; this.renderLedgerTable(); } }
+  },
+  quickRange(kind) {
+    const d = new Date(), y = d.getFullYear(), m = d.getMonth(), f = x => `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+    if (kind === 'month') this.range = { from: f(new Date(y, m, 1)), to: f(new Date(y, m + 1, 0)) };
+    else if (kind === 'year') this.range = { from: `${y}-01-01`, to: `${y}-12-31` };
+    else this.range = { from: '', to: '' };
+    this.setRange('from', this.range.from);
+  },
+  toolbar() {
+    const r = this.range, inp = (k, v) => `<input type="date" value="${v}" onchange="app.setRange('${k}',this.value)" class="px-2 py-1 border border-gray-300 rounded-lg bg-white text-gray-900">`;
+    const b = (k, l) => `<button class="px-3 py-1 rounded-lg bg-gray-100 text-sm text-gray-700 hover:bg-gray-200" onclick="app.quickRange('${k}')">${this.t(l)}</button>`;
+    return `<div class="no-print card mb-4"><div class="card-body flex flex-wrap items-end gap-3 p-3">
+      <div><label class="block text-xs text-gray-500">${this.t('from')}</label>${inp('from', r.from)}</div>
+      <div><label class="block text-xs text-gray-500">${this.t('to')}</label>${inp('to', r.to)}</div>
+      ${b('month','thisMonth')}${b('year','thisYear')}${b('all','allTime')}
+      <span class="flex-1"></span>
+      <button class="px-3 py-1 rounded-lg bg-gray-100 text-sm text-gray-700 hover:bg-gray-200" onclick="window.print()">🖨️ ${this.t('print')}</button>
+      <button class="px-3 py-1 rounded-lg bg-gray-100 text-sm text-gray-700 hover:bg-gray-200" onclick="app.exportCSV()">⬇ CSV</button></div></div>`;
+  },
+  tablesCSV() {
+    return [...document.querySelectorAll('#pageContainer table')].map(t => [...t.rows].map(r => [...r.cells].map(c => '"' + c.textContent.replace(/\s+/g, ' ').trim().replace(/"/g, '""') + '"').join(',')).join('\n')).join('\n\n');
+  },
+  exportCSV() {
+    const blob = new Blob(['\ufeff' + this.tablesCSV()], { type: 'text/csv;charset=utf-8' }), url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = `${this.currentPage}_${new Date().toISOString().slice(0,10)}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  },
+  async loadDefaultChart() {
+    const rows = DEFAULT_COA.map(([code, ar, en, type]) => ({ user_id: this.currentUser.id, code, name: this.lang === 'ar' ? ar : en, type }));
+    const { error } = await sb.from('accounts').insert(rows);
+    if (error) { alert(this.errMsg(error)); return; }
+    await this.loadData(); this.navigate('accounts'); this.toast(this.t('defaultLoaded'));
+  },
+  errMsg(err) {
+    const m = (err && err.message) || '';
+    if (m.includes('ACCOUNT_LIMIT_REACHED')) return this.t('limitReached');
+    if (err.code === '42501' || m.includes('row-level security')) return this.t('accessExpired');
+    if (err.code === '23505') return this.t('dupCode');
+    return m;
+  },
+
+  applyLang() {
+    const isEn = this.lang === 'en';
+    document.documentElement.lang = this.lang;
+    document.documentElement.dir = isEn ? 'ltr' : 'rtl';
+    document.body.className = 'min-h-screen font-arabic selection:bg-amber-100 selection:text-amber-900' + (isEn ? ' en' : '');
+    document.getElementById('langToggle').textContent = isEn ? 'AR / EN' : 'EN / AR';
+    const el = document.getElementById('pageTitleTag');
+    if (el) el.textContent = T[this.lang].appTitle;
+    this.applyStatic();
+  },
+
+  toggleLang() {
+    this.lang = this.lang === 'ar' ? 'en' : 'ar';
+    localStorage.setItem(STORAGE_LANG, this.lang);
+    this.applyLang();
+    if (!document.getElementById('appView').classList.contains('hidden')) {
+      const page = this.currentPage || 'dashboard';
+      this.navigate(page);
+    }
+  },
+
+  t(key) { return T[this.lang][key] || key; },
+
+  toast(msg, type='success') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show'; el.style.background = type === 'error' ? '#dc2626' : '#059669';
+    setTimeout(() => el.classList.remove('show'), 3000);
+  },
+
+  bindAuth() {
+    document.getElementById('forgotBtn').onclick = () => this.forgot();
+    document.getElementById('termsLink').href = CFG.LEGAL_URL; document.getElementById('lnkLegal').href = CFG.LEGAL_URL;
+    document.getElementById('lnkSupport').href = 'https://wa.me/' + CFG.SUPPORT_WA;
+    document.getElementById('showRegister').onclick = () => this.toggleAuth('register');
+    document.getElementById('showLogin').onclick = () => this.toggleAuth('login');
+    this.setAuthPlaceholders();
+  },
+
+  setAuthPlaceholders() {
+    document.getElementById('loginEmail').placeholder = this.t('emailPlaceholder');
+    document.getElementById('loginPassword').placeholder = this.t('passwordPlaceholder');
+    document.getElementById('regName').placeholder = this.t('namePlaceholder');
+    document.getElementById('regEmail').placeholder = this.t('emailPlaceholder');
+    document.getElementById('regPassword').placeholder = this.t('passwordPlaceholder');
+    document.getElementById('authTitle').textContent = this.t('authTitle');
+    document.getElementById('authSub').textContent = this.t('authSub');
+    document.getElementById('loginHeading').textContent = this.t('loginHeading');
+    document.getElementById('registerHeading').textContent = this.t('registerHeading');
+    document.getElementById('btnLogin').textContent = this.t('btnLogin');
+    document.getElementById('btnRegister').textContent = this.t('btnRegister');
+    document.getElementById('noAccount').textContent = this.t('noAccount');
+    document.getElementById('showRegister').textContent = this.t('createAccount');
+    document.getElementById('haveAccount').textContent = this.t('haveAccount');
+    document.getElementById('showLogin').textContent = this.t('signIn');
+    document.getElementById('forgotBtn').textContent = this.t('forgot');
+    document.getElementById('termsText').textContent = this.t('terms');
+    document.getElementById('termsLink').textContent = this.t('termsLink');
+  },
+
+  toggleAuth(mode) {
+    document.getElementById('loginForm').classList.toggle('hidden', mode === 'register');
+    document.getElementById('registerForm').classList.toggle('hidden', mode === 'login');
+    document.getElementById('authMsg').classList.add('hidden');
+  },
+
+  showAuth() {
+    document.getElementById('authView').classList.remove('hidden');
+    document.getElementById('appView').classList.add('hidden');
+    this.toggleAuth('login');
+  },
+
+  async login(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass = document.getElementById('loginPassword').value;
+    const msg = document.getElementById('authMsg');
+    if(!email || !pass) { msg.textContent = this.t('fillEmailPass'); msg.classList.remove('hidden'); return; }
+    const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if(error) { msg.textContent = this.t('authErrorInvalid'); msg.classList.remove('hidden'); return; }
+    msg.classList.add('hidden');
+  },
+
+  async register(e) {
+    e.preventDefault();
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const pass = document.getElementById('regPassword').value;
+    const msg = document.getElementById('authMsg');
+    if(!document.getElementById('regTerms').checked) { msg.textContent = this.t('mustAgree'); msg.classList.remove('hidden'); return; }
+    if(!name || !email || !pass) { msg.textContent = this.t('fillAll'); msg.classList.remove('hidden'); return; }
+    if(pass.length < 6) { msg.textContent = this.t('passLength'); msg.classList.remove('hidden'); return; }
+    const { data: su, error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name, accepted_terms_at: new Date().toISOString() } } });
+    if(error) { msg.textContent = error.message || this.t('regErrorExists'); msg.classList.remove('hidden'); return; }
+    msg.classList.add('hidden');
+    this.toast(su && su.session ? this.t('success') : this.t('checkEmail'));
+  },
+
+  async logout() {
+    await sb.auth.signOut();
+  },
+
+  async loadData() {
+    if(!this.currentUser) return;
+    const uid = this.currentUser.id;
+    const [a, j] = await Promise.all([
+      sb.from('accounts').select('*').eq('user_id', uid).order('code'),
+      sb.from('journal_entries').select('*').eq('user_id', uid).order('created_at', { ascending: false })
+    ]);
+    if (a.error || j.error) this.toast((a.error || j.error).message || this.t('loadError'), 'error');
+    this.data.accounts = a.data || [];
+    this.data.journalEntries = (j.data || []).map(e => ({ ...e, debit_amount: Number(e.debit_amount) || 0, credit_amount: Number(e.credit_amount) || 0 }));
+  },
+
+  async saveAccount(e) {
+    e.preventDefault();
+    if(!this.currentUser) return;
+    const id = document.getElementById('accountId').value;
+    const code = document.getElementById('accountCode').value.trim();
+    const type = document.getElementById('accountType').value;
+    const name = document.getElementById('accountName').value.trim();
+    if(!code || !name) { alert(this.t('fillCodeName')); return; }
+    const payload = { user_id: this.currentUser.id, code, type, name };
+    let result;
+    if(id) {
+      result = await sb.from('accounts').update(payload).eq('id', id).eq('user_id', this.currentUser.id);
+    } else {
+      result = await sb.from('accounts').insert(payload);
+    }
+    if(result.error) { alert(this.errMsg(result.error)); return; }
+    closeModal('accountModal');
+    await this.loadData();
+    this.navigate('accounts');
+    this.toast(this.t('success'));
+  },
+
+  async deleteAccount(id) {
+    if(!confirm(this.t('confirmDeleteAccount'))) return;
+    const { data: used } = await sb.from('journal_entries').select('id').or(`debit_account_id.eq.${id},credit_account_id.eq.${id}`).limit(1);
+    if(used && used.length > 0) { alert(this.t('accountUsed')); return; }
+    const { error } = await sb.from('accounts').delete().eq('id', id).eq('user_id', this.currentUser.id);
+    if(error) { alert(this.errMsg(error)); return; }
+    await this.loadData();
+    this.navigate('accounts');
+    this.toast(this.t('success'));
+  },
+
+  async saveJournalEntry(e) {
+    e.preventDefault();
+    if(!this.currentUser) return;
+    const date = document.getElementById('journalDate').value;
+    const da = document.getElementById('journalDebitAccount').value;
+    const damt = parseFloat(document.getElementById('journalDebitAmount').value||0);
+    const ref = document.getElementById('journalReference').value.trim();
+    const ca = document.getElementById('journalCreditAccount').value;
+    const camt = parseFloat(document.getElementById('journalCreditAmount').value||0);
+    const desc = document.getElementById('journalDescription').value.trim();
+    const id = document.getElementById('journalEntryId').value;
+    const msg = document.getElementById('journalBalanceMsg');
+
+    if(!date || !da || !ca) { alert(this.t('fillDateAccounts')); return; }
+    if(da === ca) { alert(this.t('diffAccounts')); return; }
+    if(damt <= 0 || camt <= 0) { alert(this.t('amountPositive')); return; }
+    if(Math.abs(damt - camt) > 0.005) { msg.classList.remove('hidden'); return; }
+    msg.classList.add('hidden');
+
+    const payload = {
+      user_id: this.currentUser.id,
+      date,
+      debit_account_id: da,
+      debit_amount: damt,
+      ref,
+      credit_account_id: ca,
+      credit_amount: camt,
+      description: desc
+    };
+    let result;
+    if(id) {
+      result = await sb.from('journal_entries').update(payload).eq('id', id).eq('user_id', this.currentUser.id);
+    } else {
+      result = await sb.from('journal_entries').insert(payload);
+    }
+    if(result.error) { alert(this.errMsg(result.error)); return; }
+    closeModal('journalModal');
+    await this.loadData();
+    this.navigate('journal');
+    this.toast(this.t('success'));
+  },
+
+  async deleteJournal(id) {
+    if(!confirm(this.t('confirmDeleteJournal'))) return;
+    const { error } = await sb.from('journal_entries').delete().eq('id', id).eq('user_id', this.currentUser.id);
+    if(error) { alert(this.errMsg(error)); return; }
+    await this.loadData();
+    this.navigate('journal');
+    this.toast(this.t('success'));
+  },
+
+  currentPage: 'dashboard',
+  navigate(page) {
+    this.currentPage = page;
+    this.currentPage = page;
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    const navBtn = document.querySelector(`.nav-item[data-page="${page}"]`); if (navBtn) navBtn.classList.add('active');
+    document.getElementById('pageTitle').textContent = this.pageLabel(page);
+    const container = document.getElementById('pageContainer');
+    container.innerHTML = '';
+    if ((this.access === 'expired' && !['settings','plans','admin'].includes(page)) || page === 'plans') { this.renderPaywall(container); return; }
+    switch(page) {
+      case 'dashboard': this.renderDashboard(container); break;
+      case 'accounts': this.renderAccounts(container); break;
+      case 'journal': this.renderJournal(container); break;
+      case 'ledger': this.renderLedger(container); break;
+      case 'trial': this.renderTrial(container); break;
+      case 'income': this.renderIncome(container); break;
+      case 'balance': this.renderBalance(container); break;
+      case 'settings': this.renderSettings(container); break;
+      case 'admin': this.renderAdmin(container); break;
+    }
+    if (['journal','ledger','trial','income','balance'].includes(page)) container.insertAdjacentHTML('afterbegin', this.toolbar());
+  },
+
+  pageLabel(p) {
+    const labels = { plans:this.t('upgrade'), admin:this.t('navAdmin'), dashboard:this.t('dashboard'), accounts:this.t('accounts'), journal:this.t('journal'), ledger:this.t('ledger'), trial:this.t('trial'), income:this.t('income'), balance:this.t('balance'), settings:this.t('settings') };
+    return labels[p] || '';
+  },
+
+  esc(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); },
+  fmt(n) { return Number(n || 0).toLocaleString(this.lang === 'ar' ? 'ar-SA' : 'en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); },
+  getAccount(id) { return this.data.accounts.find(a => a.id === id); },
+  accountTypeLabel(t){ const m={asset:this.t('assetType'),liability:this.t('liabilityType'),equity:this.t('equityType'),revenue:this.t('revenueType'),expense:this.t('expenseType')}; return m[t]||t; },
+  normalSide(t){ return ['asset','expense'].includes(t) ? 'debit' : 'credit'; },
+
+  trialBalance(mode='all') {
+    return this.data.accounts.map(a=>{
+      let debit=0, credit=0;
+      this.entriesFor(mode).forEach(e=>{
+        if(e.debit_account_id===a.id) debit += e.debit_amount;
+        if(e.credit_account_id===a.id) credit += e.credit_amount;
+      });
+      const normal = this.normalSide(a.type);
+      let d=0, c=0;
+      if(normal==='debit'){ d = debit-credit; if(d<0) c = -d; d=Math.max(d,0); }
+      else { c = credit-debit; if(c<0) d = -c; c=Math.max(c,0); }
+      return { id:a.id, code:a.code, name:a.name, type:a.type, debit:d, credit:c };
+    });
+  },
+
+  renderDashboard(container) {
+    const tb = this.trialBalance();
+    const totalDebit = tb.reduce((s,a)=>s+(a.debit||0),0);
+    const totalCredit = tb.reduce((s,a)=>s+(a.credit||0),0);
+    const revenue = tb.filter(a=>this.getAccount(a.id).type==='revenue').reduce((s,a)=>s+(a.credit||0)-(a.debit||0),0);
+    const expense = tb.filter(a=>this.getAccount(a.id).type==='expense').reduce((s,a)=>s+(a.debit||0)-(a.credit||0),0);
+    const net = revenue - expense;
+    const assets = tb.filter(a=>this.getAccount(a.id).type==='asset').reduce((s,a)=>s+(a.debit||0)-(a.credit||0),0);
+    const liab = tb.filter(a=>this.getAccount(a.id).type==='liability').reduce((s,a)=>s+(a.credit||0)-(a.debit||0),0);
+    const equity = tb.filter(a=>this.getAccount(a.id).type==='equity').reduce((s,a)=>s+(a.credit||0)-(a.debit||0),0);
+
+    container.innerHTML = `
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 fade-in">
+        <div class="stat-card"><div class="stat-card__icon icon">💰</div><div><div class="label">${this.t('totalAssets')}</div><div class="value ltr">${this.fmt(assets)}</div></div></div>
+        <div class="stat-card"><div class="stat-card__icon icon">🏦</div><div><div class="label">${this.t('totalLiabilities')}</div><div class="value ltr">${this.fmt(liab)}</div></div></div>
+        <div class="stat-card"><div class="stat-card__icon icon">📊</div><div><div class="label">${this.t('totalEquity')}</div><div class="value ltr">${this.fmt(equity)}</div></div></div>
+        <div class="stat-card"><div class="stat-card__icon icon">📈</div><div><div class="label">${this.t('netProfit')}</div><div class="value ltr ${net>=0?'text-green-600':'text-red-600'}">${this.fmt(net)}</div></div></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 fade-in">
+        <div class="lg:col-span-2 card">
+          <div class="card-header"><div class="font-bold text-gray-800">${this.t('recentEntries')}</div></div>
+          <div class="card-body p-0">
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>${this.t('date')}</th><th>${this.t('ref')}</th><th>${this.t('debitAccount')}</th><th>${this.t('creditAccount')}</th><th class="ltr">${this.t('amount')}</th><th>${this.t('description')}</th></tr></thead>
+                <tbody>
+                  ${this.data.journalEntries.slice(0,10).map(e => {
+                    const da = this.getAccount(e.debit_account_id); const ca = this.getAccount(e.credit_account_id);
+                    return `<tr><td class="ltr">${e.date}</td><td>${this.esc(e.ref)||'-'}</td><td>${da?this.esc(da.name):'-'}</td><td>${ca?this.esc(ca.name):'-'}</td><td class="ltr text-debit">${this.fmt(e.debit_amount||0)}</td><td>${this.esc(e.description)||'-'}</td></tr>`;
+                  }).join('') || `<tr><td colspan="6" class="empty-state" style="padding:2rem;"><svg class="mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>${this.t('noEntries')}</td></tr>`}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="font-bold text-gray-800">${this.t('quickStats')}</div></div>
+          <div class="card-body space-y-4">
+            <div class="flex justify-between items-center p-3 rounded-lg bg-white border border-gray-100">
+              <div><div class="text-xs text-gray-500">${this.t('totalAccounts')}</div><div class="font-bold text-gray-800">${this.data.accounts.length}</div></div>
+              <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 text-xs font-bold">${this.data.accounts.length}</div>
+            </div>
+            <div class="flex justify-between items-center p-3 rounded-lg bg-white border border-gray-100">
+              <div><div class="text-xs text-gray-500">${this.t('totalEntries')}</div><div class="font-bold text-gray-800">${this.data.journalEntries.length}</div></div>
+              <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600 text-xs font-bold">${this.data.journalEntries.length}</div>
+            </div>
+            <div class="flex justify-between items-center p-3 rounded-lg bg-white border border-gray-100">
+              <div><div class="text-xs text-gray-500">${this.t('totalDebit')}</div><div class="font-bold text-gray-800 ltr">${this.fmt(totalDebit)}</div></div>
+              <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 text-xs font-bold">D</div>
+            </div>
+            <div class="flex justify-between items-center p-3 rounded-lg bg-white border border-gray-100">
+              <div><div class="text-xs text-gray-500">${this.t('totalCredit')}</div><div class="font-bold text-gray-800 ltr">${this.fmt(totalCredit)}</div></div>
+              <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 text-xs font-bold">C</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  renderAccounts(container) {
+    const types = { asset:this.t('assetType'), liability:this.t('liabilityType'), equity:this.t('equityType'), revenue:this.t('revenueType'), expense:this.t('expenseType') };
+    const byType = {};
+    Object.keys(types).forEach(t=>byType[t]=[]);
+    this.data.accounts.forEach(a=>{ byType[a.type] = byType[a.type] || []; byType[a.type].push(a); });
+
+    let html = `<div class="flex justify-between items-center mb-4 fade-in">
+      <div><h2 class="text-lg font-bold text-gray-800">${this.t('accounts')}</h2><p class="text-sm text-gray-500">${this.t('accountsSub')}</p></div>
+      <div class="flex gap-2">${this.data.accounts.length?'':`<button class="btn-success px-4 py-2 rounded-lg text-white font-medium" onclick="app.loadDefaultChart()">${this.t('loadDefault')}</button>`}<button class="btn-primary px-5 py-2 rounded-lg text-white font-medium" onclick="app.openAccountModal()">${this.t('addAccount')}</button></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">`;
+
+    Object.entries(byType).forEach(([type, list]) => {
+      const color = type==='asset'?'blue': type==='liability'?'rose': type==='equity'?'indigo': type==='revenue'?'emerald':'orange';
+      html += `<div class="card h-full">
+        <div class="card-header">
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-${color}-600 bg-${color}-100 px-2 py-0.5 rounded">${types[type]}</span>
+            <span class="ml-auto text-xs font-bold text-gray-500">${list.length}</span>
+          </div>
+        </div>
+        <div class="card-body p-3">
+          <div class="space-y-2">
+            ${list.map(a=>`
+              <div class="flex items-center justify-between p-2 rounded border border-gray-100 hover:bg-gray-50 cursor-pointer group" onclick="app.editAccount('${a.id}')">
+                <div class="flex-1 text-right">
+                  <div class="font-semibold text-gray-800">${this.esc(a.name)}</div>
+                  <div class="text-[11px] text-gray-500">${this.esc(a.code)} • ${this.normalSide(a.type)==='debit'?this.t('naturalDebit'):this.t('naturalCredit')}</div>
+                </div>
+                <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition">
+                  <button class="w-7 h-7 rounded bg-gray-100 text-gray-600 text-xs flex items-center justify-center hover:bg-gray-200" onclick="event.stopPropagation();app.editAccount('${a.id}')" title="${this.t('edit')}">✏️</button>
+                  <button class="w-7 h-7 rounded bg-red-50 text-red-500 text-xs flex items-center justify-center hover:bg-red-100" onclick="event.stopPropagation();app.deleteAccount('${a.id}')" title="${this.t('delete')}">🗑️</button>
+                </div>
+              </div>
+            `).join('') || `<div class="text-center text-gray-400 text-sm py-2">${this.t('noData')}</div>`}
+          </div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+    container.innerHTML = html;
+  },
+
+  openAccountModal(id=null) {
+    const form = document.getElementById('accountForm');
+    const idEl = document.getElementById('accountId');
+    const title = document.getElementById('accountModalTitle');
+    const code = document.getElementById('accountCode');
+    const type = document.getElementById('accountType');
+    const name = document.getElementById('accountName');
+    form.reset(); idEl.value='';
+    if(id) {
+      const a = this.getAccount(id);
+      title.textContent = this.t('edit');
+      idEl.value = a.id; code.value = a.code; type.value = a.type; name.value = a.name;
+    } else {
+      title.textContent = this.t('addAccount');
+    }
+    document.getElementById('lblAccountCode').textContent = this.t('accountCode');
+    document.getElementById('lblAccountType').textContent = this.t('accountType');
+    document.getElementById('lblAccountName').textContent = this.t('accountName');
+    document.getElementById('btnCancel').textContent = this.t('cancel')||'Cancel';
+    document.getElementById('btnSaveAccount').textContent = this.t('save')||'Save';
+    document.getElementById('accountModal').classList.add('show');
+  },
+
+  editAccount(id){ this.openAccountModal(id); },
+
+  renderJournal(container) {
+    const sel = this.data.accounts.map(a=>`<option value="${a.id}">${this.esc(a.code)} - ${this.esc(a.name)} (${this.accountTypeLabel(a.type)})</option>`).join('');
+    container.innerHTML = `
+      <div class="flex justify-between items-center mb-4 fade-in">
+        <div><h2 class="text-lg font-bold text-gray-800">${this.t('journal')}</h2><p class="text-sm text-gray-500">${this.t('journalSub')}</p></div>
+        <button class="btn-success px-5 py-2 rounded-lg text-white font-medium" onclick="app.openJournalModal()">${this.t('addJournal')}</button>
+      </div>
+      <div class="card overflow-hidden">
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>#</th><th>${this.t('date')}</th><th>${this.t('ref')}</th><th>${this.t('debitAccount')}</th><th class="ltr">${this.t('debitAmount')}</th><th>${this.t('creditAccount')}</th><th class="ltr">${this.t('creditAmount')}</th><th>${this.t('description')}</th><th>${this.t('account')}</th></tr></thead>
+            <tbody>
+              ${this.entriesFor('period').map((e,i,arr)=>{
+                const da=this.getAccount(e.debit_account_id); const ca=this.getAccount(e.credit_account_id);
+                return `<tr>
+                  <td class="ltr">${arr.length-i}</td>
+                  <td class="ltr">${e.date}</td>
+                  <td>${this.esc(e.ref)||'-'}</td>
+                  <td>${da?this.esc(da.code)+'-'+this.esc(da.name):'-'}</td>
+                  <td class="ltr text-debit">${this.fmt(e.debit_amount||0)}</td>
+                  <td>${ca?this.esc(ca.code)+'-'+this.esc(ca.name):'-'}</td>
+                  <td class="ltr text-credit">${this.fmt(e.credit_amount||0)}</td>
+                  <td class="max-w-[160px] truncate" title="${this.esc(e.description)}">${this.esc(e.description)||'-'}</td>
+                  <td><div class="flex gap-1 justify-center">
+                    <button class="w-7 h-7 rounded bg-blue-50 text-blue-600 text-xs flex items-center justify-center hover:bg-blue-100" onclick="app.editJournal('${e.id}')" title="${this.t('edit')}">✏️</button>
+                    <button class="w-7 h-7 rounded bg-red-50 text-red-500 text-xs flex items-center justify-center hover:bg-red-100" onclick="app.deleteJournal('${e.id}')" title="${this.t('delete')}">🗑️</button>
+                  </div></td>
+                </tr>`;
+              }).join('') || `<tr><td colspan="9" class="empty-state" style="padding:2rem;"><svg class="mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>${this.t('noJournalEntries')}</td></tr>`}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  },
+
+  openJournalModal(id=null) {
+    if(!this.data.accounts.length){ alert(this.t('addAccountFirst')); return; }
+    const selD = document.getElementById('journalDebitAccount');
+    const selC = document.getElementById('journalCreditAccount');
+    const opts = this.data.accounts.map(a=>`<option value="${a.id}">${this.esc(a.code)} - ${this.esc(a.name)}</option>`).join('');
+    selD.innerHTML = opts; selC.innerHTML = opts;
+    document.getElementById('journalForm').reset();
+    document.getElementById('journalEntryId').value = id||'';
+    document.getElementById('journalDate').value = new Date().toISOString().split('T')[0];
+    document.getElementById('journalBalanceMsg').classList.add('hidden');
+    document.getElementById('journalModalTitle').textContent = id ? this.t('edit') : this.t('journalEntry');
+    document.getElementById('lblJournalDate').textContent = this.t('date');
+    document.getElementById('lblDebitAccount').textContent = this.t('debitAccount');
+    document.getElementById('lblDebitAmount').textContent = this.t('debitAmount');
+    document.getElementById('lblRef').textContent = this.t('ref');
+    document.getElementById('lblCreditAccount').textContent = this.t('creditAccount');
+    document.getElementById('lblCreditAmount').textContent = this.t('creditAmount');
+    document.getElementById('lblDescription').textContent = this.t('description');
+    document.getElementById('journalBalanceMsg').textContent = this.t('balanceError');
+    document.getElementById('btnSaveJournal').textContent = this.t('saveJournal');
+    if(id) {
+      const e = this.data.journalEntries.find(x=>x.id===id);
+      document.getElementById('journalDate').value = e.date;
+      selD.value = e.debit_account_id; document.getElementById('journalDebitAmount').value = e.debit_amount;
+      document.getElementById('journalReference').value = e.ref||'';
+      selC.value = e.credit_account_id; document.getElementById('journalCreditAmount').value = e.credit_amount;
+      document.getElementById('journalDescription').value = e.description||'';
+    }
+    document.getElementById('journalModal').classList.add('show');
+  },
+
+  editJournal(id){ this.openJournalModal(id); },
+
+  renderLedger(container) {
+    container.innerHTML = `
+      <div class="flex justify-between items-center mb-4 fade-in">
+        <div><h2 class="text-lg font-bold text-gray-800">${this.t('ledger')}</h2><p class="text-sm text-gray-500">${this.t('ledgerSub')}</p></div>
+        <div class="flex gap-2">
+          <select id="ledgerAccount" onchange="app.renderLedgerTable()" class="px-3 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+            <option value="">-- ${this.t('selectAccount')} --</option>
+            ${this.data.accounts.map(a=>`<option value="${a.id}">${this.esc(a.code)} - ${this.esc(a.name)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div id="ledgerTable" class="card overflow-hidden"></div>
+    `;
+  },
+
+  renderLedgerTable() {
+    const id = document.getElementById('ledgerAccount').value;
+    const box = document.getElementById('ledgerTable');
+    if(!id){ box.innerHTML=''; return; }
+    const a = this.getAccount(id);
+    const all = this.data.journalEntries.filter(e=>e.debit_account_id===id || e.credit_account_id===id);
+    const { from, to } = this.range; let opening = 0;
+    all.forEach(e=>{ if(from && e.date<from) opening += e.debit_account_id===id ? e.debit_amount : -e.credit_amount; });
+    const entries = all.filter(e=>(!from||e.date>=from)&&(!to||e.date<=to));
+    let totalDebit=0, totalCredit=0, balance=opening;
+    const rows = entries.map(e=>{
+      const isDebit = e.debit_account_id===id;
+      const amt = isDebit ? e.debit_amount : e.credit_amount;
+      if(isDebit){ totalDebit += amt; balance += amt; } else { totalCredit += amt; balance -= amt; }
+      const other = isDebit ? this.getAccount(e.credit_account_id) : this.getAccount(e.debit_account_id);
+      return `<tr>
+        <td class="ltr">${e.date}</td><td>${this.esc(e.ref)||'-'}</td><td>${this.esc(e.description)||'-'}</td>
+        <td class="ltr ${isDebit?'text-debit':'text-gray-400'}">${isDebit?this.fmt(amt):'-'}</td>
+        <td class="ltr ${!isDebit?'text-credit':'text-gray-400'}">${!isDebit?this.fmt(amt):'-'}</td>
+        <td class="ltr font-medium">${balance>=0?this.t('debitWord'):this.t('creditWord')} ${this.fmt(Math.abs(balance))}</td>
+        <td>${other?this.esc(other.code)+'-'+this.esc(other.name):'-'}</td>
+      </tr>`;
+    }).join('');
+
+    const normal = this.normalSide(a.type);
+    let finalLabel = '';
+    if(normal==='debit') finalLabel = balance>=0?`${this.t('debitWord')} ${this.fmt(balance)}`:`${this.t('creditWord')} ${this.fmt(Math.abs(balance))}`;
+    else finalLabel = balance<=0?`${this.t('creditWord')} ${this.fmt(Math.abs(balance))}`:`${this.t('debitWord')} ${this.fmt(balance)}`;
+
+    box.innerHTML = `
+      <div class="card-body p-4">
+        <div class="flex justify-between items-center mb-3">
+          <div><div class="font-bold text-gray-800">${this.esc(a.code)} - ${this.esc(a.name)}</div><div class="text-xs text-gray-500">${this.accountTypeLabel(a.type)} • ${normal==='debit'?this.t('debitWord'):this.t('creditWord')}</div></div>
+          <div class="text-right space-y-1">
+            <div class="text-sm"><span class="text-debit">${this.t('totalDebitLabel')}</span> <span class="ltr font-bold">${this.fmt(totalDebit)}</span></div>
+            <div class="text-sm"><span class="text-credit">${this.t('totalCreditLabel')}</span> <span class="ltr font-bold">${this.fmt(totalCredit)}</span></div>
+            <div class="text-base font-bold mt-1 border-t border-gray-200 pt-1">${finalLabel}</div>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>${this.t('date')}</th><th>${this.t('ref')}</th><th>${this.t('description')}</th><th class="ltr">${this.t('debit')}</th><th class="ltr">${this.t('credit')}</th><th class="ltr">${this.t('balanceCol')}</th><th>${this.t('account')}</th></tr></thead>
+            <tbody>${opening?`<tr><td colspan="7" class="text-gray-500">${this.t('openingBal')}: ${this.fmt(opening)}</td></tr>`:''}${rows || `<tr><td colspan="7" class="empty-state text-center py-4">${this.t('noMovements')}</td></tr>`}</tbody>
+          </table>
+        </div>
+      </div>`;
+  },
+
+  renderTrial(container) {
+    const tb = this.trialBalance('asof');
+    const td = tb.reduce((s,a)=>s+a.debit,0);
+    const tc = tb.reduce((s,a)=>s+a.credit,0);
+    container.innerHTML = `
+      <div class="flex justify-between items-center mb-4 fade-in">
+        <div><h2 class="text-lg font-bold text-gray-800">${this.t('trial')}</h2><p class="text-sm text-gray-500">${this.t('trialSub')}</p></div>
+      </div>
+      <div class="card overflow-hidden">
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>${this.t('accountCode')}</th><th>${this.t('accountName')}</th><th>${this.t('accountType')}</th><th class="ltr">${this.t('debit')}</th><th class="ltr">${this.t('credit')}</th></tr></thead>
+            <tbody>
+              ${tb.map(a=>`<tr>
+                <td>${this.esc(a.code)}</td><td>${this.esc(a.name)}</td><td><span class="badge badge-${a.type}">${this.accountTypeLabel(a.type)}</span></td>
+                <td class="ltr ${a.debit>0?'text-debit':'text-gray-400'}">${this.fmt(a.debit)}</td>
+                <td class="ltr ${a.credit>0?'text-credit':'text-gray-400'}">${this.fmt(a.credit)}</td>
+              </tr>`).join('') || `<tr><td colspan="5" class="empty-state text-center py-4">${this.t('noData')}</td></tr>`}
+              <tr class="total-row"><td colspan="3">${this.t('total')}</td><td class="ltr font-bold">${this.fmt(td)}</td><td class="ltr font-bold">${this.fmt(tc)}</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <div class="flex justify-between items-center">
+            <div class="text-sm ${Math.abs(td-tc)<0.005?'text-green-600 font-bold':'text-red-600 font-bold'}">
+              ${Math.abs(td-tc)<0.005?this.t('trialBalanced'): this.t('trialNotBalanced')+this.fmt(Math.abs(td-tc))}
+            </div>
+            <div class="text-xs text-gray-500">${this.t('generatedOn')} ${new Date().toLocaleDateString(this.lang==='ar'?'ar-SA':'en-US')}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  renderIncome(container) {
+    const tb = this.trialBalance('period');
+    const rev = tb.filter(a=>a.type==='revenue');
+    const exp = tb.filter(a=>a.type==='expense');
+    const totalRev = rev.reduce((s,a)=>s+(a.credit-a.debit),0);
+    const totalExp = exp.reduce((s,a)=>s+(a.debit-a.credit),0);
+    const net = totalRev - totalExp;
+    container.innerHTML = `
+      <div class="flex justify-between items-center mb-4 fade-in">
+        <div><h2 class="text-lg font-bold text-gray-800">${this.t('income')}</h2><p class="text-sm text-gray-500">${this.t('incomeSub')}</p></div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="card">
+          <div class="card-header"><div class="font-bold text-emerald-700">${this.t('revenues')}</div></div>
+          <div class="card-body p-0">
+            <table class="w-full">
+              <thead><tr><th class="ltr">${this.t('amount')}</th><th>${this.t('accountName')}</th></tr></thead>
+              <tbody>
+                ${rev.map(a=>`<tr><td class="ltr text-credit font-medium">${this.fmt(a.credit-a.debit)}</td><td>${this.esc(a.code)} - ${this.esc(a.name)}</td></tr>`).join('')||`<tr><td colspan="2" class="text-center text-gray-400 py-3">${this.t('noData')}</td></tr>`}
+                <tr class="total-row"><td class="ltr font-bold text-emerald-700">${this.fmt(totalRev)}</td><td>${this.t('totalRevenues')}</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="font-bold text-rose-700">${this.t('expenses')}</div></div>
+          <div class="card-body p-0">
+            <table class="w-full">
+              <thead><tr><th class="ltr">${this.t('amount')}</th><th>${this.t('accountName')}</th></tr></thead>
+              <tbody>
+                ${exp.map(a=>`<tr><td class="ltr text-debit font-medium">${this.fmt(a.debit-a.credit)}</td><td>${this.esc(a.code)} - ${this.esc(a.name)}</td></tr>`).join('')||`<tr><td colspan="2" class="text-center text-gray-400 py-3">${this.t('noData')}</td></tr>`}
+                <tr class="total-row"><td class="ltr font-bold text-rose-700">${this.fmt(totalExp)}</td><td>${this.t('totalExpenses')}</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-6">
+        <div class="card-body">
+          <div class="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-gray-900 to-[#1e3a8a] text-white shadow-lg">
+            <div>
+              <div class="text-xs text-blue-100 uppercase tracking-wider font-bold">${this.t('netProfitLoss')}</div>
+              <div class="text-2xl font-bold ltr mt-1">${net>=0?'+':''}${this.fmt(net)}</div>
+              <div class="text-xs text-amber-200 mt-1">${net>=0?this.t('profit'):this.t('loss')}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-blue-200">${this.t('totalRevenues')}</div><div class="text-lg font-bold ltr">${this.fmt(totalRev)}</div>
+              <div class="text-xs text-rose-200 mt-1">${this.t('totalExpenses')}</div><div class="text-lg font-bold ltr">${this.fmt(totalExp)}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  renderBalance(container) {
+    const tb = this.trialBalance('asof');
+    const assets = tb.filter(a=>a.type==='asset');
+    const liab = tb.filter(a=>a.type==='liability');
+    const equity = tb.filter(a=>a.type==='equity');
+    const totalA = assets.reduce((s,a)=>s+(a.debit-a.credit),0);
+    const totalL = liab.reduce((s,a)=>s+(a.credit-a.debit),0);
+    const totalE = equity.reduce((s,a)=>s+(a.credit-a.debit),0);
+    const net = tb.filter(a=>a.type==='revenue').reduce((s,a)=>s+(a.credit-a.debit),0) -
+                tb.filter(a=>a.type==='expense').reduce((s,a)=>s+(a.debit-a.credit),0);
+    container.innerHTML = `
+      <div class="flex justify-between items-center mb-4 fade-in">
+        <div><h2 class="text-lg font-bold text-gray-800">${this.t('balance')}</h2><p class="text-sm text-gray-500">${this.t('balanceSub')}</p></div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="card">
+          <div class="card-header"><div class="font-bold text-blue-700">${this.t('assets')}</div></div>
+          <div class="card-body p-0">
+            <table class="w-full">
+              <thead><tr><th class="ltr">${this.t('amount')}</th><th>${this.t('accountName')}</th></tr></thead>
+              <tbody>
+                ${assets.map(a=>`<tr><td class="ltr text-debit font-medium">${this.fmt(a.debit-a.credit)}</td><td>${this.esc(a.code)} - ${this.esc(a.name)}</td></tr>`).join('')||`<tr><td colspan="2" class="text-center text-gray-400 py-3">${this.t('noData')}</td></tr>`}
+                <tr class="total-row"><td class="ltr font-bold text-blue-700">${this.fmt(totalA)}</td><td>${this.t('totalAssetsLabel')}</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="font-bold text-indigo-700">${this.t('liabilitiesEquity')}</div></div>
+          <div class="card-body p-0">
+            <table class="w-full">
+              <thead><tr><th class="ltr">${this.t('amount')}</th><th>${this.t('accountName')}</th></tr></thead>
+              <tbody>
+                ${liab.map(a=>`<tr><td class="ltr text-credit font-medium">${this.fmt(a.credit-a.debit)}</td><td>${this.esc(a.code)} - ${this.esc(a.name)}</td></tr>`).join('')}
+                ${equity.map(a=>`<tr><td class="ltr text-credit font-medium">${this.fmt(a.credit-a.debit)}</td><td>${this.esc(a.code)} - ${this.esc(a.name)}</td></tr>`).join('')}
+                <tr><td class="ltr text-credit font-medium">${this.fmt(net)}</td><td>${this.t('netProfitLossYear')}</td></tr>
+                <tr class="total-row"><td class="ltr font-bold text-indigo-700">${this.fmt(totalL+totalE+net)}</td><td>${this.t('totalLiabilitiesEquity')}</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-6">
+        <div class="card-body">
+          <div class="flex justify-between items-center p-4 rounded-xl bg-gray-900 text-white shadow">
+            <div class="text-xs text-blue-200 uppercase tracking-wider font-bold">${this.t('totalAssetsLabel')}</div>
+            <div class="text-2xl font-bold ltr mt-1">${this.fmt(totalA)}</div>
+            <div class="text-right">
+              <div class="text-xs text-indigo-200">${this.t('totalLiabEquityLabel')}</div>
+              <div class="text-lg font-bold ltr">${this.fmt(totalL+totalE+net)}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs ${Math.abs(totalA-(totalL+totalE+net))<0.005?'text-green-400':'text-red-400'} font-bold mt-1">
+                ${Math.abs(totalA-(totalL+totalE+net))<0.005?this.t('balanced'):this.t('notBalanced')}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  renderSettings(container) {
+    const u = this.currentUser;
+    container.innerHTML = `
+      <div class="max-w-xl mx-auto fade-in">
+        <div class="card">
+          <div class="card-header"><div class="font-bold text-gray-800">${this.t('profile')}</div></div>
+          <div class="card-body space-y-4">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-rose-500 flex items-center justify-center text-white text-2xl">${u.email.charAt(0).toUpperCase()}</div>
+              <div>
+                <div class="font-bold text-gray-800">${this.esc(u.user_metadata?.full_name || u.email)}</div>
+                <div class="text-sm text-gray-500">${this.esc(u.email)}</div>
+                <div class="text-xs text-gray-400 mt-1">${this.t('memberSince')} ${new Date(u.created_at).toLocaleDateString(this.lang==='ar'?'ar-SA':'en-US')}</div>
+              </div>
+            </div>
+            <div class="h-px bg-gray-200 my-4"></div>
+            <div class="text-sm font-semibold text-gray-600">${this.t('settingsData')}</div>
+            <div class="flex gap-2">
+              <button class="flex-1 btn-primary py-3 rounded-lg text-white font-medium" onclick="app.exportData()">${this.t('exportData')}</button>
+              <button class="flex-1 btn-danger py-3 rounded-lg text-white font-medium" onclick="app.clearMyData()">${this.t('clearData')}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  exportData() {
+    const blob = new Blob([JSON.stringify(this.data, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = `basha_backup_${this.currentUser.email}_${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  },
+  async clearMyData(){
+    if(!confirm(this.t('confirmClear'))) return;
+    const uid = this.currentUser.id;
+    const r1 = await sb.from('journal_entries').delete().eq('user_id', uid);
+    const r2 = await sb.from('accounts').delete().eq('user_id', uid);
+    if (r1.error || r2.error) { this.toast((r1.error || r2.error).message, 'error'); return; }
+    await this.loadData();
+    this.navigate('dashboard');
+    this.toast(this.t('cleared'));
+  }
+};
+
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+window.app = app;
+window.addEventListener('keydown', e=>{ if(e.key==='Escape'){ document.querySelectorAll('.modal').forEach(m=>m.classList.remove('show')); } });
+
+app.init();
+</script>
+</body>
+</html>
